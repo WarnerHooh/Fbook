@@ -33,8 +33,8 @@ export default class BadInstagramCloneApp extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
-          onBarCodeRead={this._onBarCodeRead.bind(this)}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+          onBarCodeRead={::this._onBarCodeRead}>
+          <Text style={styles.capture} onPress={::this.takePicture}>[CAPTURE]</Text>
         </Camera>
 
         <Text>{ barcode }</Text>
