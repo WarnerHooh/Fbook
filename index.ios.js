@@ -9,27 +9,18 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View,
-  Navigator
+  View
 } from 'react-native';
 
-import Scanner from './src/js/components/Scanner.js'
-import Book from './src/js/components/Book'
-import Home from './src/js/components/Home'
+import Scanner from './js/components/Scanner.js'
+import Navigator from './js/navigator/Navigator'
 
 export default class Fbook extends Component {
   render() {
     return (
-        <Navigator
-          initialRoute={{pageComponent:Home}}
-
-          renderScene={(route, navigator)=> {
-              const Page = route.pageComponent;
-              return <Page
-                      navigator={navigator}/>
-            }
-          }
-        />
+      <View style={styles.container}>
+        <Scanner />
+      </View>
     );
   }
 }
