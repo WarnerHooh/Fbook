@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -20,16 +20,16 @@ import Home from './src/js/components/Home'
 export default class Fbook extends Component {
   render() {
     return (
-        <Navigator
-          initialRoute={{pageComponent:Home}}
+      <Navigator
+        initialRoute={{pageComponent: Home}}
 
-          renderScene={(route, navigator)=> {
-              const Page = route.pageComponent;
-              return <Page
-                      navigator={navigator}/>
-            }
-          }
-        />
+        renderScene={(route, navigator)=> {
+          const Page = route.pageComponent;
+          return <Page
+            navigator={navigator} data={route.data}/>
+        }
+        }
+      />
     );
   }
 }

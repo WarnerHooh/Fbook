@@ -20,7 +20,7 @@ export default class Book extends Component {
 
   _getDataFromApi = (isbn)=> {
     console.log('access-----------getData')
-    fetch('https://api.douban.com/v2/book/isbn/9787115369093')
+    fetch('https://api.douban.com/v2/book/isbn/' + isbn)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson)
@@ -33,7 +33,7 @@ export default class Book extends Component {
   }
 
   componentWillMount() {
-    this._getDataFromApi(123)
+    this._getDataFromApi(this.props.data.isbn)
   }
 
   render() {
@@ -51,12 +51,12 @@ export default class Book extends Component {
           <View style={{flex: 1, alignSelf: 'center', top: 50}}>
             <Image
               style={{width: 100, height: 150}}
-              source={{uri: book.uri}}/>
+              source={this.state.bookData.images ? {uri: this.state.bookData.images.large}:require('../../image/onloading.jpg')}/>
           </View>
         </View>
         <View style={styles.textBox}>
-          <Text style={styles.title}>{this.state.bookData.subtitle}</Text>
-          <Text style={styles.author}>{this.state.bookData.author ? this.state.bookData.author[0] : ""}</Text>
+          <Text style={styles.title}>{this.state.bookData.title}</Text>
+          <Text style={styles.author}>{this.state.bookData.author ? this.state.bookData.author[0] : ''}</Text>
           <Text style={styles.description}>{this.state.bookData.summary ? this.state.bookData.summary : ''}</Text>
         </View>
       </View>
