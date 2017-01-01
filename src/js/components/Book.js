@@ -20,16 +20,20 @@ export default class Book extends Component {
 
   _getDataFromApi = (isbn)=> {
     console.log('access-----------getData')
-    const jsonData = fetch('https://api.douban.com/v2/book/isbn/9787115369093')
+    fetch('https://api.douban.com/v2/book/isbn/9787115369093')
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson)
+        this.setState({bookData: responseJson})
         return responseJson;
       })
       .catch((error) => {
         console.error(error);
       });
-    this.setState({bookData: jsonData})
+  }
+
+  componentWillMount() {
+    this._getDataFromApi(123)
   }
 
   render() {
@@ -51,9 +55,9 @@ export default class Book extends Component {
           </View>
         </View>
         <View style={styles.textBox}>
-          <Text style={styles.title}>{}</Text>
-          <Text style={styles.author}>{book.author}</Text>
-          <Text style={styles.description}>{book.description}</Text>
+          <Text style={styles.title}>{this.state.bookData.subtitle}</Text>
+          <Text style={styles.author}>{this.state.bookData.author ? this.state.bookData.author[0] : ""}</Text>
+          <Text style={styles.description}>{this.state.bookData.summary ? this.state.bookData.summary : ''}</Text>
         </View>
       </View>
     );
