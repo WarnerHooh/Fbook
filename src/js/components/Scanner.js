@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import Camera from 'react-native-camera';
-// import Camera from './Camera';
 
 export default class BadInstagramCloneApp extends Component {
   constructor(props) {
@@ -51,7 +50,9 @@ export default class BadInstagramCloneApp extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   preview: {
     flex: 1,

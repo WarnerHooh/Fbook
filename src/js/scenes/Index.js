@@ -1,22 +1,31 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
 
-import Scanner from '../components/Scanner'
+// import Scanner from '../components/Scanner'
+import Scanner from './Scanner'
+import Playground from '../components/Playground'
 
 export default class extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  _onForward() {
+    const { navigator } = this.props
+    navigator.push({
+      title: 'Scanning',
+      component: Scanner
+    })
+  }
+
+  _onBack() {
+    const { navigator } = this.props
+    navigator.pop()
+  }
+
   render() {
     return (
       <View style={ style.container }>
-        <Scanner />
-        <Text>Current Scene: {this.props.title}</Text>
-
-        <TouchableHighlight onPress={this.props.onForward}>
-          <Text>Tap me to load the next scene</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={this.props.onBack}>
-          <Text>Tap me to go back</Text>
-        </TouchableHighlight>
       </View>
     )
   }

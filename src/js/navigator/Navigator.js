@@ -1,31 +1,32 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Navigator } from 'react-native'
+import { NavigatorIOS } from 'react-native'
 
 import IndexScene from '../scenes/Index'
+import Scanner from '../scenes/Scanner'
+import ScannerIcon from '../../imgs/scannerIcon.png'
 
 export default class extends Component {
+  _toScanner() {
+    this.refs.nav.push({
+      title: 'Scanning',
+      component: Scanner
+    })
+  }
+
   render() {
     return (
-      <Navigator initialRoute={ {title: 'init', index: 1} }
-                 renderScene={(route, navigator) => {
-                    return <IndexScene title={ route.title }
-                                       onForward={() => {
-                                         console.log(222)
-                                         const nextIndex = route.index + 1;
-                                         navigator.push({
-                                           title: 'Scene ' + nextIndex,
-                                           index: nextIndex,
-                                         });
-                                       }}
-                                       onBack={() => {
-                                         if (route.index > 0) {
-                                           navigator.pop();
-                                         }
-                                       }} />
-                 }}
-      />
+    <NavigatorIOS
+      ref='nav'
+      initialRoute={{
+        component: IndexScene,
+        title: '',
+        rightButtonIcon: ScannerIcon,
+        onRightButtonPress: ::this._toScanner
+      }}
+      style={{flex: 1}}
+    />
     )
   }
 }

@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Fbook', () => Fbook);
+AppRegistry.registerComponent('Fbook', () => Navigator);
