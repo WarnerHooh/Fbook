@@ -16,6 +16,7 @@ import {
 import Scanner from './src/js/components/Scanner.js'
 import Book from './src/js/components/Book'
 import Home from './src/js/components/Home'
+import MainNavigator from './src/js/navigator/Navigator'
 
 export default class Fbook extends Component {
   render() {
@@ -53,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Fbook', () => Navigator);
+AppRegistry.registerComponent('Fbook', () => MainNavigator);
