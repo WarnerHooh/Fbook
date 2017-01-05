@@ -5,7 +5,7 @@ import { NavigatorIOS } from 'react-native'
 
 import IndexScene from '../scenes/Index'
 import Scanner from '../scenes/Scanner'
-import ScannerIcon from '../../image/scannerIcon.png'
+import ScannerIcon from '../../image/qr-code.png'
 
 export default class extends Component {
   _toScanner() {
