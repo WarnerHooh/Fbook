@@ -1,29 +1,23 @@
 'use strict';
-import React, { Component } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native';
-
-import Camera from 'react-native-camera';
+import React, {Component} from "react";
+import {Dimensions, StyleSheet, Text, TouchableHighlight, View, Button} from "react-native";
+import Camera from "react-native-camera";
 
 export default class BadInstagramCloneApp extends Component {
   constructor(props) {
     super(props);
-  
-    this.state = { barcode: null };
+
+    this.state = {barcode: null};
   }
 
   _onBarCodeRead(rs) {
     this.setState({barcode: rs.data});
+    console.log("data:" + rs.data);
+    this.props.handleScanSuccess(rs.data);
   }
 
   render() {
-    let { barcode } = this.state;
-
+    let {barcode} = this.state;
     return (
       <View style={styles.container}>
         <Camera
@@ -33,9 +27,7 @@ export default class BadInstagramCloneApp extends Component {
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
           onBarCodeRead={::this._onBarCodeRead}>
-          <Text style={styles.capture} onPress={::this.takePicture}>[CAPTURE]</Text>
         </Camera>
-
         <Text>{ barcode }</Text>
       </View>
     );

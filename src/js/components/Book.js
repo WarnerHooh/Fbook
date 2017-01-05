@@ -33,7 +33,7 @@ export default class Book extends Component {
   }
 
   componentWillMount() {
-    this._getDataFromApi(this.props.data.isbn)
+    this._getDataFromApi(this.props.isbn);
   }
 
   render() {
@@ -47,7 +47,7 @@ export default class Book extends Component {
     return (
       <View style={{flex: 1, flexDirection: 'column', height: 500, alignSelf: 'stretch'}}>
         <View style={{backgroundColor: "darkred", flex: 0.5, zIndex: 1}}>
-          <Header style={{zIndex: 1}} navigator={navigator}/>
+          {/*<Header style={{zIndex: 1}} navigator={navigator}/>*/}
           <View style={{flex: 1, alignSelf: 'center', top: 50}}>
             <Image
               style={{width: 100, height: 150}}

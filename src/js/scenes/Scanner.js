@@ -1,14 +1,26 @@
-import React, { Component } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet } from 'react-native'
+import React, {Component} from 'react'
+import {View, Text, Image, Dimensions, StyleSheet} from 'react-native'
 
 import Scanner from '../components/Scanner'
+import Book from '../components/Book'
 
 export default class extends Component {
-  render () {
+
+  _handleScanSuccess = (isbn)=> {
+    this.props.navigator.push({
+      component: Book,
+      title: 'book info',
+      passProps:{
+        isbn:isbn
+      }
+    });
+  }
+
+  render() {
     return (
       <View style={ style.container }>
-        <Scanner style={ style.scanner } />
-        <View style={ style.focusBox } />
+        <Scanner style={ style.scanner } handleScanSuccess={::this._handleScanSuccess}/>
+        <View style={ style.focusBox }/>
 
         <View style={ style.desc }>
           <Text style={ style.tips }>Align QR code/barcode within frame to scan</Text>
@@ -20,8 +32,8 @@ export default class extends Component {
 }
 
 const windowWidth = Dimensions.get('window').width,
-      windowHeight = Dimensions.get('window').height,
-      scannerSize = windowWidth / 3 * 2;
+  windowHeight = Dimensions.get('window').height,
+  scannerSize = windowWidth / 3 * 2;
 
 const style = StyleSheet.create({
   container: {
