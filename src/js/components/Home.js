@@ -6,7 +6,7 @@ import {
   Button,
   TextInput
 } from 'react-native';
-import Book from './Book'
+import BookInfo from '../scenes/BookInfo'
 
 export default class Home extends Component {
 

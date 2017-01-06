@@ -5,9 +5,10 @@ import {
   Image,
   StyleSheet
 } from 'react-native';
-import Header from './Header'
 
-export default class Book extends Component {
+import onloadingPic from '../../image/onloading.jpg'
+
+export default class BookInfo extends Component {
 
   constructor(props) {
     super(props);
@@ -19,7 +20,6 @@ export default class Book extends Component {
   }
 
   _getDataFromApi = (isbn)=> {
-    console.log('access-----------getData')
     fetch('https://api.douban.com/v2/book/isbn/' + isbn)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -37,21 +37,14 @@ export default class Book extends Component {
   }
 
   render() {
-    const book = {
-      uri: 'https://img3.doubanio.com/lpic/s28259431.jpg',
-      title: '重构',
-      author: '马丁·福勒',
-      description: '本书清晰揭示了重构的过程，解释了重构的原理和最佳实践方式，并给出了何时以及何地应该开始挖掘代码以求改善。书中给出了70 多个可行的重构，每个重构都介绍了一种经过验证的代码变换手法的动机和技术。本书提出的重构准则将帮助你一次一小步地修改你的代码，从而减少了开发过程中的风险。',
-    }
-    const {navigator} = this.props;
+
     return (
       <View style={{flex: 1, flexDirection: 'column', height: 500, alignSelf: 'stretch'}}>
         <View style={{backgroundColor: "darkred", flex: 0.5, zIndex: 1}}>
-          {/*<Header style={{zIndex: 1}} navigator={navigator}/>*/}
           <View style={{flex: 1, alignSelf: 'center', top: 50}}>
             <Image
               style={{width: 100, height: 150}}
-              source={this.state.bookData.images ? {uri: this.state.bookData.images.large}:require('../../image/onloading.jpg')}/>
+              source={this.state.bookData.images ? {uri: this.state.bookData.images.large} : onloadingPic}/>
           </View>
         </View>
         <View style={styles.textBox}>

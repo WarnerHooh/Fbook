@@ -1,4 +1,3 @@
-'use strict';
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -6,7 +5,7 @@ import {
 } from 'react-native';
 
 export default () => (
-  <View style={ style.placeholder }></View>
+  <View style={ style.placeholder }/>
 )
 
 const style = StyleSheet.create({

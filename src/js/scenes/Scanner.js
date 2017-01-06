@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, Image, Dimensions, StyleSheet} from 'react-native'
 
 import Scanner from '../components/Scanner'
-import Book from '../components/Book'
+import Book from './BookInfo'
 
 export default class extends Component {
 
