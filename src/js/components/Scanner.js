@@ -26,7 +26,6 @@ export default class BadInstagramCloneApp extends Component {
           aspect={Camera.constants.Aspect.fill}
           onBarCodeRead={::this._onBarCodeRead}>
         </Camera>
-        <Text>{ barcode }</Text>
       </View>
     );
   }

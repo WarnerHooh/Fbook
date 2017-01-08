@@ -3,6 +3,7 @@ import {View, Text, Image, Dimensions, StyleSheet} from 'react-native'
 
 import Scanner from '../components/Scanner'
 import Book from './BookInfo'
+import ScanningBackground from '../../image/scanning-bg.png'
 
 export default class extends Component {
 
@@ -20,37 +21,27 @@ export default class extends Component {
     return (
       <View style={ style.container }>
         <Scanner style={ style.scanner } handleScanSuccess={::this._handleScanSuccess}/>
-        <View style={ style.focusBox }/>
 
         <View style={ style.desc }>
           <Text style={ style.tips }>Align QR code/barcode within frame to scan</Text>
           <Text style={ style.tips }>My QR Code</Text>
         </View>
+        <Image source={ScanningBackground} style={style.scanningBackground} />
       </View>
     )
   }
 }
 
 const windowWidth = Dimensions.get('window').width,
-  windowHeight = Dimensions.get('window').height,
-  scannerSize = windowWidth / 3 * 2;
+      windowHeight = Dimensions.get('window').height,
+      scannerHeight = windowWidth / 375  * 800;
 
 const style = StyleSheet.create({
   container: {
     marginTop: 64,
     flex: 1,
     alignItems: 'flex-end',
-  },
-
-  focusBox: {
-    position: 'absolute',
-    width: scannerSize,
-    height: scannerSize,
-    left: (windowWidth - scannerSize) / 2,
-    top: 50,
-    borderWidth: 1,
-    borderColor: 'red',
-    backgroundColor: 'transparent'
+    overflow: 'hidden'
   },
 
   scanner: {
@@ -61,7 +52,7 @@ const style = StyleSheet.create({
 
   desc: {
     position: 'absolute',
-    bottom: 160,
+    bottom: 130,
     left: 0,
     width: windowWidth,
     backgroundColor: 'transparent',
@@ -75,6 +66,12 @@ const style = StyleSheet.create({
   img: {
     width: windowWidth,
     height: windowHeight,
+    position: 'absolute'
+  },
+
+  scanningBackground: {
+    width: windowWidth,
+    height: scannerHeight,
     position: 'absolute'
   }
 })
