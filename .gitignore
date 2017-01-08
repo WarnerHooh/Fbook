@@ -40,3 +40,5 @@ buck-out/
 \.buckd/
 android/app/libs
 *.keystore
+ios/Fbook/Base.lproj/LaunchScreen.xib
+yarn.lock
