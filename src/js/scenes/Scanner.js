@@ -8,13 +8,13 @@ import ScanningBackground from '../../image/scanning-bg.png'
 export default class extends Component {
 
   _handleScanSuccess = (isbn)=> {
-    this.props.navigator.push({
+    this.props.navigator.replaceAtIndex({
       component: Book,
       title: 'book info',
-      passProps:{
+      passProps: {
         isbn:isbn
       }
-    });
+    }, 1);
   }
 
   render() {
