@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
 import { NavigatorIOS } from 'react-native'
 
-import IndexScene from '../scenes/Index'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import HomeScene from '../scenes/Home'
+import LoginScene from '../scenes/Login'
 import Scanner from '../scenes/Scanner'
 import ScannerIcon from '../../image/qr-code.png'
+import * as loginActions from '../actions/loginAction'
 
-export default class extends Component {
+class FBookNavigator extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   _toScanner() {
     this.refs.nav.push({
       title: 'Scanning',
@@ -15,16 +24,30 @@ export default class extends Component {
 
   render() {
     return (
-    <NavigatorIOS
-      ref='nav'
-      initialRoute={{
-        component: IndexScene,
-        title: '',
-        rightButtonIcon: ScannerIcon,
-        onRightButtonPress: ::this._toScanner
-      }}
-      style={{flex: 1}}
-    />
+      this.props.isLogin ? <NavigatorIOS
+        ref='nav'
+        initialRoute={{
+          component: HomeScene,
+          title: '',
+          rightButtonIcon: ScannerIcon,
+          onRightButtonPress: ::this._toScanner
+        }}
+        style={{flex: 1}}
+      /> : <LoginScene />
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(loginActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FBookNavigator)

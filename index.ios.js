@@ -2,6 +2,6 @@ import {
   AppRegistry,
 } from 'react-native';
 
-import MainNavigator from './src/js/navigator/Navigator'
+import setup from './src/js/setup'
 
-AppRegistry.registerComponent('Fbook', () => MainNavigator);
+AppRegistry.registerComponent('Fbook', () => setup);
