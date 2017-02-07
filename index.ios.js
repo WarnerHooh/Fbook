@@ -4,4 +4,4 @@ import {
 
 import setup from './src/js/setup'
 
-AppRegistry.registerComponent('fbook', () => setup);
+AppRegistry.registerComponent('Fbook', () => setup);
