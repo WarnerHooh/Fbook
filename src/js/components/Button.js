@@ -9,16 +9,14 @@ export default class extends Component {
 
   render() {
     return (
-      <View>
-        <Button
-          activeOpacity={0.7}
-          containerStyle={ style.container }
-          style={ style.button }
-          onPress={ ::this._onPress }
-        >
-          { this.props.children }
-        </Button>
-      </View>
+      <Button
+        activeOpacity={0.7}
+        containerStyle={ style.container }
+        style={ style.button }
+        onPress={ ::this._onPress }
+      >
+        { this.props.children }
+      </Button>
     )
   }
 }
