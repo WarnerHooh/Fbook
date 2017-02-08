@@ -3,7 +3,8 @@ import {
   Text,
   View,
   Image,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from 'react-native';
 
 import onloadingPic from '../../image/onloading.jpg'
@@ -39,9 +40,10 @@ export default class BookInfo extends Component {
   render() {
 
     return (
-      <View style={{flex: 1, flexDirection: 'column', height: 500, alignSelf: 'stretch'}}>
-        <View style={{backgroundColor: "darkred", flex: 0.5, zIndex: 1}}>
-          <View style={{flex: 1, alignSelf: 'center', top: 50}}>
+      <ScrollView style={{marginTop:60}}
+      >
+        <View style={{backgroundColor: "darkred"}}>
+          <View style={{alignSelf: 'center', top: 60}}>
             <Image
               style={{width: 100, height: 150}}
               source={this.state.bookData.images ? {uri: this.state.bookData.images.large} : onloadingPic}/>
@@ -52,16 +54,14 @@ export default class BookInfo extends Component {
           <Text style={styles.author}>{this.state.bookData.author ? this.state.bookData.author[0] : ''}</Text>
           <Text style={styles.description}>{this.state.bookData.summary ? this.state.bookData.summary : ''}</Text>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   textBox: {
-    top: 100,
-    flex: 1,
-    zIndex: 0
+    marginTop: 100
   },
   author: {
     alignSelf: 'center',
