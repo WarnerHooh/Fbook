@@ -8,7 +8,7 @@ import HomeScene from '../scenes/Home'
 import LoginScene from '../scenes/Login'
 import Scanner from '../scenes/Scanner'
 import ScannerIcon from '../../image/qr-code.png'
-import * as loginActions from '../actions/loginAction'
+import * as loginActions from '../actions/login'
 
 class FBookNavigator extends Component {
   constructor(props) {
@@ -38,16 +38,12 @@ class FBookNavigator extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLogin: state
-  }
-}
+const mapStateToProps = (state) => ({
+  isLogin: state.login
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(loginActions, dispatch)
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(loginActions, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(FBookNavigator)

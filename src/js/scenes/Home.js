@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Button from '../components/Button'
-import * as loginActions from '../actions/loginAction'
+import * as loginActions from '../actions/login'
 
 class Home extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Home extends Component {
     return (
       <View style={ style.container }>
         <Button onButtonPress={ this.props.actions.toLogout }>Sign Out</Button>
+        <Text>{ JSON.stringify(this.props.user) }</Text>
       </View>
     )
   }
@@ -26,10 +27,16 @@ const style = StyleSheet.create({
   }
 })
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(loginActions, dispatch)
   }
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

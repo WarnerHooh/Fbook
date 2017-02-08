@@ -1,12 +1,8 @@
-import { LOGIN, LOGOUT } from '../actions/loginAction'
+import { combineReducers } from 'redux'
 
-export default (state = false, action) => {
-  switch (action.type) {
-    case LOGIN:
-      return true;
-    case LOGOUT:
-      return false;
-    default:
-      return state;
-  }
-}
+import login from './login'
+import user from './user'
+
+export default combineReducers({
+  login, user
+})

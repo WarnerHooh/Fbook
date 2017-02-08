@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Hoshi } from 'react-native-textinput-effects';
 
 import Button from '../components/Button'
-import * as loginActions from '../actions/loginAction'
+import * as loginActions from '../actions/login'
 
 class Login extends Component {
   constructor(props) {
@@ -18,9 +18,7 @@ class Login extends Component {
 
   handleLogin() {
     let { username, password } = this.state;
-    if(username === 'admin' && password === 'admin') {
-      this.props.actions.toLogin();
-    }
+    this.props.actions.toLogin({username, password});
   }
 
   render() {
@@ -110,16 +108,12 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state) => {
-  return {
-    isLogin: state
-  }
-}
+const mapStateToProps = (state) => ({
+  isLogin: state.login
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(loginActions, dispatch)
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(loginActions, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
