@@ -1,11 +1,13 @@
-import { LOGIN, LOGOUT } from '../actions/login'
+import { LOGIN, LOGOUT, LOGERROR } from '../actions/login'
 
-export default (state = false, action) => {
+export default (state = { isLogin: false }, action) => {
   switch (action.type) {
     case LOGIN:
-      return true;
+      return { ...state, isLogin: true };
     case LOGOUT:
-      return false;
+      return { ...state, isLogin: false };
+    case LOGERROR:
+      return { isLogin: false, errorMessage: action.payload}
     default:
       return state;
   }

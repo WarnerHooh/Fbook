@@ -2,6 +2,7 @@ import { updateUser } from './user'
 
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const LOGERROR = 'LOGERROR'
 
 export const toLogin = ({username, password}) => {
   return async (dispatch) => {
@@ -14,6 +15,8 @@ export const toLogin = ({username, password}) => {
       } catch (e) {
         console.log(e);
       }
+    } else {
+      dispatch(logWithError())
     }
   }
 }
@@ -21,6 +24,13 @@ export const toLogin = ({username, password}) => {
 const logined = () => {
   return {
     type: LOGIN
+  }
+}
+
+const logWithError = () => {
+  return {
+    type: LOGERROR,
+    payload: 'Login failed: Invalid username or password.'
   }
 }
 

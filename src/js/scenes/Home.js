@@ -3,12 +3,23 @@ import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Sign from './SignIn'
 import Button from '../components/Button'
 import * as loginActions from '../actions/login'
 
 class Home extends Component {
   constructor(props) {
     super(props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.isLogin) {
+      this.props.navigator.replace({
+        component: Sign,
+        title: '',
+        navigationBarHidden: true
+      }, 0)
+    }
   }
 
   render() {
@@ -29,7 +40,8 @@ const style = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    isLogin: state.login.isLogin
   }
 }
 

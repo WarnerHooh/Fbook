@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Image, StyleSheet, Dimensions } from 'react-native'
+import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet, Dimensions } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Hoshi } from 'react-native-textinput-effects';
 
+import Home from './Home'
+import SignUp from './SignUp'
 import Button from '../components/Button'
 import * as loginActions from '../actions/login'
 
@@ -12,13 +14,40 @@ class Login extends Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      errorMessage: props.errorMessage
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.isLogin) {
+      this.props.navigator.replace({
+        component: Home,
+        title: ''
+      }, 0)
     }
   }
 
   handleLogin() {
     let { username, password } = this.state;
-    this.props.actions.toLogin({username, password});
+    if(username.length === 0 || password.length === 0) {
+      this.setState({
+        errorMessage: 'Empty username or password.'
+      })
+    } else {
+      this.setState({
+        errorMessage: null
+      })
+      this.props.actions.toLogin({username, password});
+    }
+  }
+
+  handleSignUp() {
+    this.props.navigator.push({
+      component: SignUp,
+      title: 'Sign Up',
+      navigationBarHidden: true
+    })
   }
 
   render() {
@@ -33,7 +62,7 @@ class Login extends Component {
           <Hoshi
             label={'Username'}
             borderColor={'#ec2e40'}
-            labelStyle={ style.label }
+            labelStyle={ [style.label, style.grey] }
             inputStyle={ style.input }
             style={ style.field }
             autoCapitalize={'none'}
@@ -46,7 +75,7 @@ class Login extends Component {
             label={'Password'}
             borderColor={'#ec2e40'}
             style={ style.field }
-            labelStyle={ style.label }
+            labelStyle={ [style.label, style.grey] }
             inputStyle={ style.input }
             autoCapitalize={'none'}
             autoCorrect={false}
@@ -55,8 +84,18 @@ class Login extends Component {
             value={ this.state.password }
           />
 
+          <View style={ style.errorView }>
+            <Text style={ style.errorMessage }>{ this.state.errorMessage || this.props.errorMessage }</Text>
+          </View>
+
           <View style={ style.button }>
             <Button onButtonPress={ ::this.handleLogin }>Sign In</Button>
+          </View>
+
+          <View style={ style.signUp }>
+            <Text style={ style.grey }>
+              Don't have an account?  <Text style={ style.toSignUp }  onPress={ ::this.handleSignUp }>Sign Up</Text>
+            </Text>
           </View>
 
         </View>
@@ -70,10 +109,15 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 100,
+    overflow: 'visible'
+  },
+  grey: {
+    color: '#a2a1b8',
   },
   logo: {
     width: 80,
     height: 80,
+    borderRadius: 40,
     marginBottom: 100,
     alignSelf: 'center'
   },
@@ -86,7 +130,6 @@ const style = StyleSheet.create({
   },
   label: {
     backgroundColor: 'transparent',
-    color: '#a2a1b8',
     fontWeight: 'bold',
     margin: 0,
     padding: 0,
@@ -94,6 +137,14 @@ const style = StyleSheet.create({
   },
   button: {
     marginTop: 60
+  },
+  errorView: {
+    marginTop: -10,
+    backgroundColor: 'transparent'
+  },
+  errorMessage: {
+    color: '#f00',
+    fontSize: 12
   },
   backgroundImage:{
     flex:1,
@@ -105,11 +156,21 @@ const style = StyleSheet.create({
     left: 0,
     top: 0,
     backgroundColor:'rgba(0,0,0,0)',
+  },
+  signUp: {
+    marginTop: 60,
+    height: 100,
+    backgroundColor: 'transparent',
+  },
+  toSignUp: {
+    color: '#fff',
+    marginLeft: 10
   }
 })
 
-const mapStateToProps = (state) => ({
-  isLogin: state.login
+const mapStateToProps = ({login}) => ({
+  isLogin: login.isLogin,
+  errorMessage: login.errorMessage
 })
 
 const mapDispatchToProps = (dispatch) => ({
