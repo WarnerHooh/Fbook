@@ -7,6 +7,8 @@ import { Hoshi } from 'react-native-textinput-effects';
 import Home from './Home'
 import SignUp from './SignUp'
 import Button from '../components/Button'
+import ScannerScene from './Scanner'
+import ScannerIcon from '../../image/qr-code.png'
 import * as loginActions from '../actions/login'
 
 class Login extends Component {
@@ -19,12 +21,21 @@ class Login extends Component {
     }
   }
 
+  _toScanner() {
+    this.props.navigator.push({
+      title: 'Scanning',
+      component: ScannerScene
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.isLogin) {
-      this.props.navigator.replace({
+      this.props.navigator.push({
         component: Home,
-        title: ''
-      }, 0)
+        title: '',
+        rightButtonIcon: ScannerIcon,
+        onRightButtonPress: ::this._toScanner
+      })
     }
   }
 
@@ -46,7 +57,8 @@ class Login extends Component {
     this.props.navigator.push({
       component: SignUp,
       title: 'Sign Up',
-      navigationBarHidden: true
+      navigationBarHidden: false,
+      rightButtonIcon: ScannerIcon,
     })
   }
 
