@@ -4,14 +4,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Hoshi } from 'react-native-textinput-effects';
 
-import Home from './Home'
-import SignUp from './SignUp'
 import Button from '../components/Button'
-import ScannerScene from './Scanner'
-import ScannerIcon from '../../image/qr-code.png'
-import * as loginActions from '../actions/login'
+import * as signInActions from '../actions/signIn'
 
-class Login extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,27 +15,23 @@ class Login extends Component {
       password: '',
       errorMessage: props.errorMessage
     }
-  }
 
-  _toScanner() {
-    this.props.navigator.push({
-      title: 'Scanning',
-      component: ScannerScene
-    })
+    this.handleResetNavigation(props)
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.isLogin) {
-      this.props.navigator.push({
-        component: Home,
-        title: '',
-        rightButtonIcon: ScannerIcon,
-        onRightButtonPress: ::this._toScanner
-      })
-    }
+    this.handleResetNavigation(nextProps)
   }
 
-  handleLogin() {
+  handleResetNavigation({ isSignedIn, navigator }) {
+    isSignedIn && navigator.resetTo({
+      screen: 'fbook.HomeScene',
+      animated: false,
+      title: '',
+    });
+  }
+
+  handleSignIn() {
     let { username, password } = this.state;
     if(username.length === 0 || password.length === 0) {
       this.setState({
@@ -49,23 +41,25 @@ class Login extends Component {
       this.setState({
         errorMessage: null
       })
-      this.props.actions.toLogin({username, password});
+      this.props.actions.toSignIn({username, password});
     }
   }
 
   handleSignUp() {
     this.props.navigator.push({
-      component: SignUp,
+      screen: 'fbook.SignUpScene',
       title: 'Sign Up',
-      navigationBarHidden: false,
-      rightButtonIcon: ScannerIcon,
+      backButtonTitle: 'back',
+      navigatorStyle: {
+        navBarHidden: true
+      },
     })
   }
 
   render() {
     return (
       <View>
-        <Image source={require('../../image/login-bg.png')} style={style.backgroundImage} />
+        <Image source={require('../../image/signin-bg.png')} style={style.backgroundImage} />
 
         <View style={ style.container }>
 
@@ -101,7 +95,7 @@ class Login extends Component {
           </View>
 
           <View style={ style.button }>
-            <Button onButtonPress={ ::this.handleLogin }>Sign In</Button>
+            <Button onButtonPress={ ::this.handleSignIn }>Sign In</Button>
           </View>
 
           <View style={ style.signUp }>
@@ -180,13 +174,13 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({login}) => ({
-  isLogin: login.isLogin,
-  errorMessage: login.errorMessage
+const mapStateToProps = ({signIn}) => ({
+  isSignedIn: signIn.isSignedIn,
+  errorMessage: signIn.errorMessage
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(loginActions, dispatch)
+  actions: bindActionCreators(signInActions, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

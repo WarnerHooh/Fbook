@@ -1,41 +1,41 @@
 import { updateUser } from './user'
 
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
-export const LOGERROR = 'LOGERROR'
+export const SIGNIN = 'SIGNIN'
+export const SIGNOUT = 'SIGNOUT'
+export const SIGNIN_ERROR = 'SIGNIN_ERROR'
 
-export const toLogin = ({username, password}) => {
+export const toSignIn = ({username, password}) => {
   return async (dispatch) => {
     if(username === 'admin' && password === 'admin') {
       try {
         let response = await fetch('https://api.github.com/users/warnerhooh')
         let json = await response.json()
         dispatch(updateUser(json))
-        dispatch(logined())
+        dispatch(signedIn())
       } catch (e) {
         console.log(e);
       }
     } else {
-      dispatch(logWithError())
+      dispatch(signInWithError())
     }
   }
 }
 
-const logined = () => {
+export const signedIn = () => {
   return {
-    type: LOGIN
+    type: SIGNIN
   }
 }
 
-const logWithError = () => {
+const signInWithError = () => {
   return {
-    type: LOGERROR,
+    type: SIGNIN_ERROR,
     payload: 'Login failed: Invalid username or password.'
   }
 }
 
-export const toLogout = () => {
+export const toSignOut = () => {
   return {
-    type: LOGOUT
+    type: SIGNOUT
   }
 }

@@ -8,9 +8,10 @@
   },
   "dependencies": {
     "react": "15.4.1",
-    "react-native": "^0.41.0",
+    "react-native": "^0.39.0",
     "react-native-button": "^1.7.1",
-    "react-native-camera": "^0.5.1",
+    "react-native-camera": "^0.4.1",
+    "react-native-navigation": "^2.0.0-experimental.209",
     "react-native-textinput-effects": "^0.3.0",
     "react-native-vector-icons": "^4.0.0",
     "react-redux": "^5.0.2",

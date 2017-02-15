@@ -1,15 +1,30 @@
 import React from 'react'
-import { Provider } from 'react-redux'
+import { Navigation } from 'react-native-navigation';
 
-import configureStore from './store'
-import Navigator from './navigator/Navigator'
+import { iconsLoaded } from './utils/appIcons';
 
-const store = configureStore()
+import registerScreens from './scenes';
 
-export default () => {
-  return (
-    <Provider store={ store }>
-      <Navigator />
-    </Provider>
-  )
+registerScreens();
+
+const screen = {
+  screen: 'fbook.SignInScene',
+    title: 'Sign In',
+    navigatorStyle: {
+    navBarHidden: true
+  },
 }
+
+iconsLoaded.then(() => {
+  Navigation.startSingleScreenApp({
+    screen: {
+      screen: 'fbook.SignInScene',
+      title: 'Sign In',
+      navigatorStyle: {
+        navBarHidden: true
+      },
+    },
+    passProps: {
+    },
+  });
+});

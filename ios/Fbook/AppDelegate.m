@@ -9,6 +9,8 @@
 
 #import "AppDelegate.h"
 
+#import "RCCManager.h"
+
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
@@ -19,7 +21,12 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation];
 
+  /*
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"fbook"
                                                initialProperties:nil
@@ -31,6 +38,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+   */
   return YES;
 }
 

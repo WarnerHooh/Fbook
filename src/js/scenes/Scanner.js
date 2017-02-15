@@ -12,7 +12,7 @@ export default class extends Component {
       component: Book,
       title: 'book info',
       passProps: {
-        isbn:isbn
+        isbn: isbn
       }
     }, 1);
   }
@@ -38,7 +38,6 @@ const windowWidth = Dimensions.get('window').width,
 
 const style = StyleSheet.create({
   container: {
-    marginTop: 64,
     flex: 1,
     alignItems: 'flex-end',
     overflow: 'hidden'

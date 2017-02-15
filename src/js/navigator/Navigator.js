@@ -8,7 +8,7 @@ import HomeScene from '../scenes/Home'
 import SignScene from '../scenes/SignIn'
 import ScannerScene from '../scenes/Scanner'
 import ScannerIcon from '../../image/qr-code.png'
-import * as loginActions from '../actions/login'
+import * as loginActions from '../actions/signIn'
 
 class FBookNavigator extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class FBookNavigator extends Component {
     return <NavigatorIOS
       ref='nav'
       initialRoute={
-        this.props.isLogin ?
+        this.props.isSignedIn ?
         {
           component: HomeScene,
           title: '',
@@ -45,7 +45,7 @@ class FBookNavigator extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isLogin: state.login.isLogin
+  isSignedIn: state.login.isSignedIn
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,7 +1,1 @@
-import {
-  AppRegistry,
-} from 'react-native';
-
-import setup from './src/js/setup'
-
-AppRegistry.registerComponent('fbook', () => setup);
+import App from './src/js/setup'

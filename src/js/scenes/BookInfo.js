@@ -15,9 +15,29 @@ export default class BookInfo extends Component {
     super(props);
     this.state = {
       bookData: {
-        subtitle: 'book name'
+        subtitle: 'book name',
       }
     };
+
+    this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent);
+  }
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        title: 'Back',
+        id: 'goHome'
+      }
+    ]
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'goHome') {
+      this.props.navigator.resetTo({
+        screen: 'fbook.HomeScene',
+        animated: false
+      });
+    }
   }
 
   _getDataFromApi = (isbn)=> {
@@ -40,8 +60,7 @@ export default class BookInfo extends Component {
   render() {
 
     return (
-      <ScrollView style={{marginTop:60}}
-      >
+      <ScrollView style={{/*marginTop:60*/}}>
         <View style={{backgroundColor: "darkred"}}>
           <View style={{alignSelf: 'center', top: 60}}>
             <Image
