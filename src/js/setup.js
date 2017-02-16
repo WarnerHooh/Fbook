@@ -18,8 +18,7 @@ const screen = {
 iconsLoaded.then(() => {
   Navigation.startSingleScreenApp({
     screen: {
-      screen: 'fbook.SignInScene',
-      title: 'Sign In',
+      screen: 'fbook.HomeScene',
       navigatorStyle: {
         navBarHidden: true
       },

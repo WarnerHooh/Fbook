@@ -24,6 +24,7 @@ const icons = {
   "facebook--active": [30, "#fff", FontAwesome],
 
   "qrcode": [20, "#bbb", FontAwesome],
+  "close":  [20, "#bbb", FontAwesome],
 }
 
 const defaultIconProvider = Ionicons;

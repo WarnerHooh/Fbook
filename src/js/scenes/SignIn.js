@@ -154,11 +154,11 @@ const style = StyleSheet.create({
   },
   backgroundImage:{
     flex:1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     alignItems:'center',
     justifyContent:'center',
     position: 'absolute',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
     left: 0,
     top: 0,
     backgroundColor:'rgba(0,0,0,0)',

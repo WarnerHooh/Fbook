@@ -1,6 +1,6 @@
 import { SIGNIN, SIGNOUT, SIGNIN_ERROR } from '../actions/signIn'
 
-export default (state = { isSignedIn: true }, action) => {
+export default (state = { isSignedIn: false }, action) => {
   console.log(action)
   switch (action.type) {
     case SIGNIN:

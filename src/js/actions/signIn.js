@@ -6,17 +6,23 @@ export const SIGNIN_ERROR = 'SIGNIN_ERROR'
 
 export const toSignIn = ({username, password}) => {
   return async (dispatch) => {
-    if(username === 'admin' && password === 'admin') {
-      try {
-        let response = await fetch('https://api.github.com/users/warnerhooh')
-        let json = await response.json()
+    try {
+      let response = await fetch('http://45.78.48.184:3000/user/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      let json = await response.json()
+      if(response.ok) {
         dispatch(updateUser(json))
         dispatch(signedIn())
-      } catch (e) {
-        console.log(e);
+      } else {
+        dispatch(signInWithError(json.message))
       }
-    } else {
-      dispatch(signInWithError())
+    } catch (e) {
+      dispatch(signInWithError(e))
     }
   }
 }
@@ -27,10 +33,10 @@ export const signedIn = () => {
   }
 }
 
-const signInWithError = () => {
+const signInWithError = (error) => {
   return {
     type: SIGNIN_ERROR,
-    payload: 'Login failed: Invalid username or password.'
+    payload: `Login failed: ${error}`
   }
 }
 
