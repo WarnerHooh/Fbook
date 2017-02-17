@@ -43,6 +43,9 @@ export default class extends Component {
           <Text style={ style.tips }>My QR Code</Text>
         </View>
         <Image source={ScanningBackground} style={style.scanningBackground} />
+        {/*<View style={{position: 'absolute'}}>*/}
+          {/*<Text onPress={::this.testPress}>Hello</Text>*/}
+        {/*</View>*/}
       </View>
     )
   }

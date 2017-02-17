@@ -9,6 +9,8 @@ import Button from '../components/Button'
 import Search from '../components/Search'
 import * as signInActions from '../actions/signIn'
 import { iconsMap, iconsLoaded } from '../utils/appIcons'
+var SearchBar = require('react-native-search-bar');
+
 
 class Home extends Component {
   constructor(props) {
@@ -96,6 +98,7 @@ class Home extends Component {
   render() {
     return (
       <View style={ style.container }>
+        {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
         <MaterialCommunityIcon onPress={::this.navigateToScanner} style={ style.scanPanel } name="qrcode-scan" size={100} color="#bbb" />
         <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ this.props.isSignedIn ? '#2E9968' : '#ccc' } />
         <MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ this.state.doubanSignedIn ? '#2E9968' : '#ccc' } />

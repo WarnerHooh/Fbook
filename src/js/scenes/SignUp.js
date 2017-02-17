@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet, Dimensions } from 'react-native'
+import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Hoshi } from 'react-native-textinput-effects';
 
+import imageStyle from '../../style/image'
+import colorStyle from '../../style/color'
 import Button from '../components/Button'
 import * as signUpActions from '../actions/signUp'
 
@@ -44,78 +46,75 @@ class SignUp extends Component {
 
   render() {
     return (
-      <View>
-        <Image source={require('../../image/signup-bg.png')} style={style.backgroundImage} />
+        <Image source={require('../../image/signup-bg.png')} style={imageStyle.backgroundImage}>
+          <View style={ style.container }>
+            <Text style={ style.title }>Sign Up</Text>
 
-        <View style={ style.container }>
-          <Text style={ style.title }>Sign Up</Text>
+            <Hoshi
+              label={'Username'}
+              borderColor={'#ec2e40'}
+              labelStyle={ [style.label, colorStyle.grey] }
+              inputStyle={ style.input }
+              style={ style.field }
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={ (username) => { this.setState({username}) } }
+              value={ this.state.username }
+            />
 
-          <Hoshi
-            label={'Username'}
-            borderColor={'#ec2e40'}
-            labelStyle={ [style.label, style.grey] }
-            inputStyle={ style.input }
-            style={ style.field }
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={ (username) => { this.setState({username}) } }
-            value={ this.state.username }
-          />
+            <Hoshi
+              label={'Email Address'}
+              borderColor={'#ec2e40'}
+              labelStyle={ [style.label, colorStyle.grey] }
+              inputStyle={ style.input }
+              style={ style.field }
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={ (email) => { this.setState({email}) } }
+              value={ this.state.email }
+            />
 
-          <Hoshi
-            label={'Email Address'}
-            borderColor={'#ec2e40'}
-            labelStyle={ [style.label, style.grey] }
-            inputStyle={ style.input }
-            style={ style.field }
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={ (email) => { this.setState({email}) } }
-            value={ this.state.email }
-          />
+            <Hoshi
+              label={'Password'}
+              borderColor={'#ec2e40'}
+              style={ style.field }
+              labelStyle={ [style.label, colorStyle.grey] }
+              inputStyle={ style.input }
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              secureTextEntry={true}
+              onChangeText={ (password) => { this.setState({password}) } }
+              value={ this.state.password }
+            />
 
-          <Hoshi
-            label={'Password'}
-            borderColor={'#ec2e40'}
-            style={ style.field }
-            labelStyle={ [style.label, style.grey] }
-            inputStyle={ style.input }
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            secureTextEntry={true}
-            onChangeText={ (password) => { this.setState({password}) } }
-            value={ this.state.password }
-          />
+            <Hoshi
+              label={'Confirm Password'}
+              borderColor={'#ec2e40'}
+              style={ style.field }
+              labelStyle={ [style.label, colorStyle.grey] }
+              inputStyle={ style.input }
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              secureTextEntry={true}
+              onChangeText={ (passwordConfirm) => { this.setState({passwordConfirm}) } }
+              value={ this.state.passwordConfirm }
+            />
 
-          <Hoshi
-            label={'Confirm Password'}
-            borderColor={'#ec2e40'}
-            style={ style.field }
-            labelStyle={ [style.label, style.grey] }
-            inputStyle={ style.input }
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            secureTextEntry={true}
-            onChangeText={ (passwordConfirm) => { this.setState({passwordConfirm}) } }
-            value={ this.state.passwordConfirm }
-          />
+            <View style={ style.errorView }>
+              <Text style={ style.errorMessage }>{ this.state.errorMessage || this.props.errorMessage }</Text>
+            </View>
 
-          <View style={ style.errorView }>
-            <Text style={ style.errorMessage }>{ this.state.errorMessage || this.props.errorMessage }</Text>
+            <View style={ style.button }>
+              <Button onButtonPress={ ::this.handleSignUp }>Sign Up</Button>
+            </View>
+
+            <View style={ style.signIn }>
+              <Text style={ colorStyle.grey }>
+                Already have an account?  <Text style={ style.toSignUp }  onPress={ ::this.handleSignIn }>Sign In</Text>
+              </Text>
+            </View>
           </View>
-
-          <View style={ style.button }>
-            <Button onButtonPress={ ::this.handleSignUp }>Sign Up</Button>
-          </View>
-
-          <View style={ style.signIn }>
-            <Text style={ style.grey }>
-              Already have an account?  <Text style={ style.toSignUp }  onPress={ ::this.handleSignIn }>Sign In</Text>
-            </Text>
-          </View>
-
-        </View>
-      </View>
+        </Image>
     )
   }
 }
@@ -163,21 +162,11 @@ const style = StyleSheet.create({
     color: '#f00',
     fontSize: 12
   },
-  backgroundImage:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
-    position: 'absolute',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    left: 0,
-    top: 0,
-    backgroundColor:'rgba(0,0,0,0)',
-  },
   signIn: {
-    marginTop: 60,
-    height: 100,
+    marginTop: 10,
+    height: 20,
     backgroundColor: 'transparent',
+    alignSelf: 'center',
   },
   toSignUp: {
     color: '#fff',

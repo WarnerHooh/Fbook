@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet, Dimensions } from 'react-native'
+import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Hoshi } from 'react-native-textinput-effects';
 
+import imageStyle from '../../style/image'
+import colorStyle from '../../style/color'
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 import * as signInActions from '../actions/signIn'
 
 class SignIn extends Component {
@@ -39,7 +42,8 @@ class SignIn extends Component {
       })
     } else {
       this.setState({
-        errorMessage: null
+        errorMessage: null,
+        isLoading: true
       })
       this.props.actions.toSignIn({username, password});
     }
@@ -58,9 +62,7 @@ class SignIn extends Component {
 
   render() {
     return (
-      <View>
-        <Image source={require('../../image/signin-bg.png')} style={style.backgroundImage} />
-
+      <Image source={require('../../image/signin-bg.png')} style={imageStyle.backgroundImage}>
         <View style={ style.container }>
 
           <Image source={require('../../image/logo.png')} style={style.logo} />
@@ -68,7 +70,7 @@ class SignIn extends Component {
           <Hoshi
             label={'Username'}
             borderColor={'#ec2e40'}
-            labelStyle={ [style.label, style.grey] }
+            labelStyle={ [style.label, colorStyle.grey] }
             inputStyle={ style.input }
             style={ style.field }
             autoCapitalize={'none'}
@@ -81,7 +83,7 @@ class SignIn extends Component {
             label={'Password'}
             borderColor={'#ec2e40'}
             style={ style.field }
-            labelStyle={ [style.label, style.grey] }
+            labelStyle={ [style.label, colorStyle.grey] }
             inputStyle={ style.input }
             autoCapitalize={'none'}
             autoCorrect={false}
@@ -99,13 +101,14 @@ class SignIn extends Component {
           </View>
 
           <View style={ style.signUp }>
-            <Text style={ style.grey }>
+            <Text style={ colorStyle.grey }>
               Don't have an account?  <Text style={ style.toSignUp }  onPress={ ::this.handleSignUp }>Sign Up</Text>
             </Text>
           </View>
-
         </View>
-      </View>
+
+        <Loading show={this.props.isLoading} />
+      </Image>
     )
   }
 }
@@ -115,10 +118,7 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 100,
-    overflow: 'visible'
-  },
-  grey: {
-    color: '#a2a1b8',
+    overflow: 'visible',
   },
   logo: {
     width: 80,
@@ -152,21 +152,11 @@ const style = StyleSheet.create({
     color: '#f00',
     fontSize: 12
   },
-  backgroundImage:{
-    flex:1,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    alignItems:'center',
-    justifyContent:'center',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    backgroundColor:'rgba(0,0,0,0)',
-  },
   signUp: {
-    marginTop: 60,
-    height: 100,
+    marginTop: 10,
+    height: 20,
     backgroundColor: 'transparent',
+    alignSelf: 'center'
   },
   toSignUp: {
     color: '#fff',
@@ -175,6 +165,7 @@ const style = StyleSheet.create({
 })
 
 const mapStateToProps = ({signIn}) => ({
+  isLoading: signIn.isLoading,
   isSignedIn: signIn.isSignedIn,
   errorMessage: signIn.errorMessage
 })

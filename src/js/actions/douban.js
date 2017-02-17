@@ -1,15 +1,12 @@
-import { updateUser } from './user'
-
 export const SIGNEDIN = 'SIGNEDIN'
 export const SIGNING = 'SIGNING'
-export const SIGNOUT = 'SIGNOUT'
 export const SIGNIN_ERROR = 'SIGNIN_ERROR'
 
 export const toSignIn = ({username, password}) => {
   return async (dispatch) => {
     try {
       dispatch(signing());
-      let response = await fetch('http://45.78.48.184:3000/user/session', {
+      let response = await fetch('http://45.78.48.184:3000/user/douban/session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -18,7 +15,6 @@ export const toSignIn = ({username, password}) => {
       })
       let json = await response.json()
       if(response.ok) {
-        dispatch(updateUser(json))
         dispatch(signedIn())
       } else {
         dispatch(signInWithError(json.message))
@@ -43,11 +39,5 @@ const signInWithError = (error) => {
   return {
     type: SIGNIN_ERROR,
     payload: `Login failed: ${error}`
-  }
-}
-
-export const toSignOut = () => {
-  return {
-    type: SIGNOUT
   }
 }
