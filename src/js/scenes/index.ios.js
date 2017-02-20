@@ -13,11 +13,17 @@ import BookList from './BookList';
 const store = configureStore()
 
 export default () => {
-  Navigation.registerComponent('fbook.SignInScene', () => SignIn, store, Provider);
-  Navigation.registerComponent('fbook.SignUpScene', () => SignUp, store, Provider);
-  Navigation.registerComponent('fbook.HomeScene', () => Home, store, Provider);
-  Navigation.registerComponent('fbook.ScannerScene', () => Scanner, store, Provider);
-  Navigation.registerComponent('fbook.BookInfoScene', () => BookInfo, store, Provider);
-  Navigation.registerComponent('fbook.DoubanScene', () => Douban, store, Provider);
-  Navigation.registerComponent('fbook.BookListScene', () => BookList, store, Provider);
+  const SCENES = {
+    'fbook.SignInScene':    SignIn,
+    'fbook.SignUpScene':    SignUp,
+    'fbook.HomeScene':      Home,
+    'fbook.ScannerScene':   Scanner,
+    'fbook.BookInfoScene':  BookInfo,
+    'fbook.DoubanScene':    Douban,
+    'fbook.BookListScene':  BookList
+  };
+
+  Object.keys(SCENES).forEach((key) => {
+    Navigation.registerComponent(key, () => SCENES[key], store, Provider);
+  })
 }

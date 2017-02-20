@@ -1,14 +1,20 @@
 import { AsyncStorage } from 'react-native'
-import { applyMiddleware, createStore } from 'redux'
+import { compose, applyMiddleware, createStore } from 'redux'
+import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 
 import reducers from '../reducers'
-import { loadLocalState } from '../utils/localStorage'
-
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
 
 export default () => {
-  const store = createStoreWithMiddleware(reducers)
-  loadLocalState(store)
+  const store = createStore(
+    reducers,
+    undefined,
+    compose(
+      applyMiddleware(thunk),
+      autoRehydrate()
+    )
+  )
+
+  persistStore(store, {storage: AsyncStorage})
   return store
 }
