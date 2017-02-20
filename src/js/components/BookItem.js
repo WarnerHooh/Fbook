@@ -4,30 +4,57 @@ import {
   View,
   Image,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  TouchableWithoutFeedback,
+Alert
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+import reactLogo from '../../image/react.png'
 
-export default ({bookName, imageUrl}) => {
-  return (
-    <View style={styles.bookItem}>
-      <Image style={styles.bookPicture} source={{uri: imageUrl || ''}} />
-      <View style={styles.bookDetails}>
-        <Text style={styles.bookTitle}>{ bookName }</Text>
+export default class BookItem extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-        <Text>
-          <Text style={styles.bookLike}>
-            <Icon name='heart-o' color='#a2a1b8' size={15} /> 15 Likes
-          </Text>
-          <Text>   </Text>
-          <Text style={styles.bookComment}>
-            <Icon name='commenting-o' color='#a2a1b8' size={15} /> 21 Comments
-          </Text>
-        </Text>
-      </View>
-    </View>
-  );
+  _onPress = () => {
+    let {bookName, imageUrl, brief, author} = this.props;
+    this.props.navigator.push({
+      screen: 'fbook.BookInfoScene',
+      title: 'book',
+      passProps: {
+        isSaved: true,
+        bookData: {
+          bookName, imageUrl, brief, author
+        }
+      }
+    })
+  }
+
+  render() {
+    let {bookName, imageUrl} = this.props;
+
+    return (
+      <TouchableWithoutFeedback onPress={::this._onPress}>
+        <View style={styles.bookItem}>
+          <Image style={styles.bookPicture} source={ imageUrl ? {uri: imageUrl} : reactLogo } />
+          <View style={styles.bookDetails}>
+            <Text style={styles.bookTitle}>{ bookName }</Text>
+
+            <Text>
+              <Text style={styles.bookLike}>
+                <Icon name='heart-o' color='#a2a1b8' size={15} /> 15 Likes
+              </Text>
+              <Text>   </Text>
+              <Text style={styles.bookComment}>
+                <Icon name='commenting-o' color='#a2a1b8' size={15} /> 21 Comments
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

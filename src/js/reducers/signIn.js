@@ -1,4 +1,4 @@
-import { SIGNING, SIGNEDIN, SIGNIN_ERROR } from '../actions/douban'
+import { SIGNING, SIGNOUT, SIGNEDIN, SIGNIN_ERROR } from '../actions/signIn'
 
 export default (state = { isSignedIn: false, isLoading: false }, action) => {
   switch (action.type) {
@@ -7,7 +7,9 @@ export default (state = { isSignedIn: false, isLoading: false }, action) => {
     case SIGNEDIN:
       return { ...state, isSignedIn: true, isLoading: false, errorMessage: null };
     case SIGNIN_ERROR:
-      return { isSignedIn: false, isLoading: false, errorMessage: action.payload}
+      return { isSignedIn: false, isLoading: false, errorMessage: action.payload};
+    case SIGNOUT:
+      return { isSignedIn: false, isLoading: false, errorMessage: null };
     default:
       return state;
   }

@@ -1,3 +1,4 @@
+import { saveToLocalState, clearLocalState } from '../utils/localStorage'
 import { updateUser } from './user'
 
 export const SIGNEDIN = 'SIGNEDIN'
@@ -9,7 +10,8 @@ export const toSignIn = ({username, password}) => {
   return async (dispatch) => {
     try {
       dispatch(signing());
-      let response = await fetch('http://45.78.48.184:3000/user/session', {
+      // let response = await fetch('http://10.17.5.55:3000/user/session', {
+        let response = await fetch('http://45.78.48.184:3000/user/session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -18,6 +20,8 @@ export const toSignIn = ({username, password}) => {
       })
       let json = await response.json()
       if(response.ok) {
+        saveToLocalState({user: json});
+
         dispatch(updateUser(json))
         dispatch(signedIn())
       } else {
@@ -28,6 +32,7 @@ export const toSignIn = ({username, password}) => {
     }
   }
 }
+
 
 export const signedIn = () => {
   return {
@@ -46,8 +51,7 @@ const signInWithError = (error) => {
   }
 }
 
-export const toSignOut = () => {
-  return {
-    type: SIGNOUT
-  }
+export const toSignOut = () => (dispatch)=> {
+  clearLocalState({dispatch});
+  dispatch({type: SIGNOUT});
 }

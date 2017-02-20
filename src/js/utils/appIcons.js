@@ -25,6 +25,7 @@ const icons = {
 
   "qrcode": [20, "#bbb", FontAwesome],
   "close":  [20, "#bbb", FontAwesome],
+  "sign-out": [20, "#bbb", FontAwesome],
 }
 
 const defaultIconProvider = Ionicons;

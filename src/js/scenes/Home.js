@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native'
+import { View, Text, TouchableHighlight, Image, Alert, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -18,7 +18,6 @@ class Home extends Component {
 
     // this.handleResetNavigation(props)
     this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent)
-
     iconsLoaded.then(() => {
       this.props.navigator.setButtons({
         rightButtons: [{
@@ -41,7 +40,7 @@ class Home extends Component {
   // }
 
   componentWillReceiveProps(nextProps) {
-    this.handleResetNavigation(nextProps);
+    // this.handleResetNavigation(nextProps);
   }
 
   onNavigatorEvent(event) {
@@ -58,8 +57,8 @@ class Home extends Component {
   }
 
   handleProfile() {
-    let { isSignedIn, navigator } = this.props;
-    if(isSignedIn) {
+    let { token, navigator } = this.props;
+    if(token) {
       navigator.push({
         screen: 'fbook.BookListScene',
         title: 'Book List'
@@ -75,7 +74,8 @@ class Home extends Component {
   }
 
   showDoubanModal() {
-    this.props.navigator.showLightBox({
+    let { token, navigator } = this.props;
+    token && navigator.showLightBox({
       screen: "fbook.DoubanScene",
       passProps: {},
       style: {
@@ -85,8 +85,8 @@ class Home extends Component {
     });
   }
 
-  handleResetNavigation({ isSignedIn, navigator }) {
-    isSignedIn || navigator.resetTo({
+  handleResetNavigation({ token, navigator }) {
+    token || navigator.resetTo({
       screen: 'fbook.SignInScene',
       animated: false,
       navigatorStyle: {
@@ -96,12 +96,14 @@ class Home extends Component {
   }
 
   render() {
+    let { token, douban } = this.props;
     return (
       <View style={ style.container }>
+        <Image source={require('../../image/logo.png')} style={style.logo} />
         {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
         <MaterialCommunityIcon onPress={::this.navigateToScanner} style={ style.scanPanel } name="qrcode-scan" size={100} color="#bbb" />
-        <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ this.props.isSignedIn ? '#2E9968' : '#ccc' } />
-        <MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ this.state.doubanSignedIn ? '#2E9968' : '#ccc' } />
+        <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
+        <MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ douban.dbcl2 ? '#2E9968' : '#ccc' } />
         {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
         {/*<Text>{ JSON.stringify(this.props.user) }</Text>*/}
       </View>
@@ -114,9 +116,16 @@ const style = StyleSheet.create({
     marginTop: 40,
     flex: 1
   },
+  logo: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignSelf: 'center',
+    marginTop: 100
+  },
   scanPanel: {
     textAlign: 'center',
-    marginTop: 260,
+    marginTop: 100,
   },
   user: {
     position: 'absolute',
@@ -132,10 +141,10 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({user, douban}) => {
   return {
-    user: state.user,
-    isSignedIn: state.signIn.isSignedIn
+    token: user.token,
+    douban: douban.cookie
   }
 }
 

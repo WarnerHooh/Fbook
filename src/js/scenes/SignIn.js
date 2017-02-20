@@ -26,8 +26,8 @@ class SignIn extends Component {
     this.handleResetNavigation(nextProps)
   }
 
-  handleResetNavigation({ isSignedIn, navigator }) {
-    isSignedIn && navigator.resetTo({
+  handleResetNavigation({ token, navigator }) {
+    token && navigator.resetTo({
       screen: 'fbook.HomeScene',
       animated: false,
       title: '',
@@ -164,9 +164,9 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({signIn}) => ({
+const mapStateToProps = ({user, signIn}) => ({
+  token: user.token,
   isLoading: signIn.isLoading,
-  isSignedIn: signIn.isSignedIn,
   errorMessage: signIn.errorMessage
 })
 

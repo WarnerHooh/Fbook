@@ -9,29 +9,26 @@ import { connect } from 'react-redux'
 
 import BookItem from '../components/BookItem'
 import { getMyBooks } from '../actions/book'
+import { toSignOut } from '../actions/signIn'
+import { clearLocalState } from '../utils/localStorage'
+import { iconsMap, iconsLoaded } from '../utils/appIcons'
 
 class BookList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookList: [{
-        id: '1',
-        isbn: '134',
-        amount: 1,
-        bookName: '深入浅出NodeJs',
-        author: '张三',
-        brief: '简介简介简介简介简介简介简介简介简介简介',
-        imageUrl: 'https://facebook.github.io/react/img/logo_og.png'
-      }, {
-        id: '2',
-        isbn: '134',
-        amount: 1,
-        bookName: '深入浅出NodeJs',
-        author: '张三',
-        brief: '简介简介简介简介简介简介简介简介简介简介',
-        imageUrl: 'https://facebook.github.io/react/img/logo_og.png'
-      }]
+      bookList: []
     };
+
+    this.props.navigator.setOnNavigatorEvent(::this._onNavigatorEvent)
+    iconsLoaded.then(() => {
+      this.props.navigator.setButtons({
+        rightButtons: [{
+          icon: iconsMap['sign-out'],
+          id: 'signOut'
+        }]
+      })
+    })
   }
 
   componentWillMount() {
@@ -39,14 +36,26 @@ class BookList extends Component {
       this.setState({
         bookList
       })
+    }).catch((e) => {
+      // TODO when token expired
+      clearLocalState({dispatch: this.props.dispatch});
+      console.log(e)
+      this.props.navigator.pop();
     })
+  }
+
+  _onNavigatorEvent = (event) => {
+    if (event.id === 'signOut') {
+      this.props.signOut();
+      this.props.navigator.pop();
+    }
   }
 
   render() {
     return (
       <ScrollView>
         {this.state.bookList.map((book) => {
-          return <BookItem key={book.id} {...book} />
+          return <BookItem key={book.id} {...book} navigator={this.props.navigator} />
         })}
       </ScrollView>
     );
@@ -57,4 +66,8 @@ const mapStateToProps = (state) => ({
   token: state.user.token
 })
 
-export default connect(mapStateToProps)(BookList)
+const mapDispatchToProps = (dispatch) => ({
+  signOut: bindActionCreators(toSignOut, dispatch)
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(BookList)
