@@ -13,6 +13,7 @@
     "react-native-camera": "^0.4.1",
     "react-native-navigation": "^2.0.0-experimental.209",
     "react-native-search-bar": "^3.0.0",
+    "react-native-swipeout": "git+https://github.com/dancormier/react-native-swipeout.git",
     "react-native-textinput-effects": "^0.3.0",
     "react-native-vector-icons": "^4.0.0",
     "react-redux": "^5.0.2",

@@ -28,8 +28,6 @@ class Home extends Component {
     })
   }
 
-  state = { doubanSignedIn: false }
-
   // static navigatorButtons = {
   //   rightButtons: [
   //     {
@@ -96,14 +94,14 @@ class Home extends Component {
   }
 
   render() {
-    let { token, douban } = this.props;
+    let { token } = this.props;
     return (
       <View style={ style.container }>
         <Image source={require('../../image/logo.png')} style={style.logo} />
         {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
         <MaterialCommunityIcon onPress={::this.navigateToScanner} style={ style.scanPanel } name="qrcode-scan" size={100} color="#bbb" />
         <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
-        <MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ douban.dbcl2 ? '#2E9968' : '#ccc' } />
+        {/*<MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ douban.dbcl2 ? '#2E9968' : '#ccc' } />*/}
         {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
         {/*<Text>{ JSON.stringify(this.props.user) }</Text>*/}
       </View>
@@ -141,10 +139,9 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({user, douban}) => {
+const mapStateToProps = ({user}) => {
   return {
-    token: user.token,
-    douban: douban.cookie
+    token: user.token
   }
 }
 

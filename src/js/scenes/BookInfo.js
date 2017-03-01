@@ -80,7 +80,7 @@ class BookInfo extends Component {
 
   _markAsPossess = () => {
     if(this.props.token) {
-      this.props.addBook(this.state.bookData).then(() => {
+      this.props.addBook.then(() => {
         this.setState({isSaved: true})
         Alert.alert('', 'Added to my book list');
       }).catch(() => {

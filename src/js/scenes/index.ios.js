@@ -7,7 +7,6 @@ import SignUp from './SignUp';
 import Home from './Home';
 import Scanner from './Scanner';
 import BookInfo from './BookInfo';
-import Douban from './Douban';
 import BookList from './BookList';
 
 const store = configureStore()
@@ -19,7 +18,6 @@ export default () => {
     'fbook.HomeScene':      Home,
     'fbook.ScannerScene':   Scanner,
     'fbook.BookInfoScene':  BookInfo,
-    'fbook.DoubanScene':    Douban,
     'fbook.BookListScene':  BookList
   };
 

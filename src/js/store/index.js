@@ -5,6 +5,8 @@ import thunk from 'redux-thunk'
 
 import reducers from '../reducers'
 
+let persistor;
+
 export default () => {
   const store = createStore(
     reducers,
@@ -15,6 +17,13 @@ export default () => {
     )
   )
 
-  persistStore(store, {storage: AsyncStorage})
+  persistor = persistStore(store, {
+    storage: AsyncStorage,
+    whitelist: 'user'
+  })
   return store
+}
+
+export const purge = () => {
+  persistor && persistor.purge()
 }

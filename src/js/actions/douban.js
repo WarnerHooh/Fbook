@@ -1,5 +1,3 @@
-import { saveToLocalState, clearLocalState } from '../utils/localStorage'
-
 export const SIGNEDIN = 'DOUBAN_SIGNEDIN'
 export const SIGNING = 'DOUBAN_SIGNING'
 export const SIGNIN_ERROR = 'DOUBAN_SIGNIN_ERROR'
@@ -28,7 +26,6 @@ export const toSignIn = ({username, password, captchaSolution}) => {
     console.log(json);
     if(response.ok) {
       if(json.login !== false) {
-        saveToLocalState({douban: json});
 
         dispatch(signedIn())
         dispatch(updateCookie(json))

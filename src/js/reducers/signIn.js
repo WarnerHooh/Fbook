@@ -1,15 +1,9 @@
-import { SIGNING, SIGNOUT, SIGNEDIN, SIGNIN_ERROR } from '../actions/signIn'
+import { SIGNIN_ERROR } from '../actions/signIn'
 
-export default (state = { isSignedIn: false, isLoading: false }, action) => {
+export default (state = { }, action) => {
   switch (action.type) {
-    case SIGNING:
-      return { ...state, isLoading: true };
-    case SIGNEDIN:
-      return { ...state, isSignedIn: true, isLoading: false, errorMessage: null };
     case SIGNIN_ERROR:
-      return { isSignedIn: false, isLoading: false, errorMessage: action.payload};
-    case SIGNOUT:
-      return { isSignedIn: false, isLoading: false, errorMessage: null };
+      return { errorMessage: action.payload };
     default:
       return state;
   }

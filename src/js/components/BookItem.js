@@ -6,8 +6,11 @@ import {
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
-Alert
-} from 'react-native';
+  Alert,
+  Easing,
+  Animated
+} from 'react-native'
+import Swipeout from 'react-native-swipeout'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import reactLogo from '../../image/react.png'
@@ -15,6 +18,16 @@ import reactLogo from '../../image/react.png'
 export default class BookItem extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      likes: {
+        count: 15,
+        status: false
+      },
+      comments: {
+        count: 12
+      }
+    }
+    this.animationValue = new Animated.Value(0);
   }
 
   _onPress = () => {
@@ -31,28 +44,82 @@ export default class BookItem extends Component {
     })
   }
 
+  _onToggleLike = () => {
+    let { likes: { count, status } } = this.state
+    this.setState({
+      likes: {
+        count: status ? --count : ++count,
+        status: !status
+      }
+    })
+  }
+
+  _animationStart = () => {
+    Animated.timing(
+      this.animationValue,
+      {
+        toValue: 1,
+        duration: 300,
+      }
+    ).start()
+  }
+
   render() {
-    let {bookName, imageUrl} = this.props;
+    let {id, bookName, imageUrl, onDelete} = this.props;
+    let {likes, comments} = this.state;
+
+    let swipeoutBtns = [
+      {
+        text: 'Delete',
+        color: 'white',
+        backgroundColor: 'red',
+        underlayColor: 'red',
+        onPress: () => {
+          this._animationStart()
+          onDelete(id)
+        }
+      }
+    ]
+
+    const animationHeight = this.animationValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [96, 0]
+    }),
+          animationOpacity = this.animationValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0]
+    });
 
     return (
-      <TouchableWithoutFeedback onPress={::this._onPress}>
-        <View style={styles.bookItem}>
-          <Image style={styles.bookPicture} source={ imageUrl ? {uri: imageUrl} : reactLogo } />
-          <View style={styles.bookDetails}>
-            <Text style={styles.bookTitle}>{ bookName }</Text>
+      <Animated.View style={{
+        height: animationHeight,
+        opacity: animationOpacity
+      }}>
+        <Swipeout right={swipeoutBtns}>
+          <TouchableWithoutFeedback onPress={::this._onPress}>
+            <View style={[styles.bookItem]}>
+              <Image style={styles.bookPicture} source={ imageUrl ? {uri: imageUrl} : reactLogo } />
+              <View style={styles.bookDetails}>
+                <Text style={styles.bookTitle}>{ bookName }</Text>
 
-            <Text>
-              <Text style={styles.bookLike}>
-                <Icon name='heart-o' color='#a2a1b8' size={15} /> 15 Likes
-              </Text>
-              <Text>   </Text>
-              <Text style={styles.bookComment}>
-                <Icon name='commenting-o' color='#a2a1b8' size={15} /> 21 Comments
-              </Text>
-            </Text>
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
+                <Text>
+                  <Text style={styles.bookLike} onPress={::this._onToggleLike}>
+                    {
+                      likes.status ? <Icon name='heart' color='#FF4A6A' size={15} /> : <Icon name='heart-o' color='#a2a1b8' size={15} />
+                    }
+                    <Text> {likes.count} Likes</Text>
+                  </Text>
+                  <Text>    </Text>
+                  <Text style={styles.bookComment}>
+                    <Icon name='commenting-o' color='#a2a1b8' size={15} />
+                    <Text> {comments.count} Comments</Text>
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Swipeout>
+      </Animated.View>
     );
   }
 }

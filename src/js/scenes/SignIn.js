@@ -16,7 +16,6 @@ class SignIn extends Component {
     this.state = {
       username: '',
       password: '',
-      errorMessage: props.errorMessage
     }
 
     this.handleResetNavigation(props)
@@ -43,7 +42,6 @@ class SignIn extends Component {
     } else {
       this.setState({
         errorMessage: null,
-        isLoading: true
       })
       this.props.actions.toSignIn({username, password});
     }
@@ -107,7 +105,7 @@ class SignIn extends Component {
           </View>
         </View>
 
-        <Loading show={this.props.isLoading} />
+        <Loading show={this.props.loader} />
       </Image>
     )
   }
@@ -164,9 +162,9 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({user, signIn}) => ({
+const mapStateToProps = ({user, signIn, loader}) => ({
   token: user.token,
-  isLoading: signIn.isLoading,
+  loader: loader,
   errorMessage: signIn.errorMessage
 })
 

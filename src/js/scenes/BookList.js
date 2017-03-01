@@ -1,23 +1,31 @@
 import React, {Component} from 'react'
 import {
   StyleSheet,
-  ScrollView
+  ListView,
+  View,
+  Alert
 } from 'react-native';
+import SearchBar from 'react-native-search-bar';
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import BookItem from '../components/BookItem'
-import { getMyBooks } from '../actions/book'
+import { getMyBooks, removeBook } from '../actions/book'
 import { toSignOut } from '../actions/signIn'
-import { clearLocalState } from '../utils/localStorage'
 import { iconsMap, iconsLoaded } from '../utils/appIcons'
+
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => (r1 !== r2) })
+
+let bookListStored = [];
 
 class BookList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      bookList: []
+      bookList: [],
+      dataSource: ds.cloneWithRows([])
     };
 
     this.props.navigator.setOnNavigatorEvent(::this._onNavigatorEvent)
@@ -32,15 +40,15 @@ class BookList extends Component {
   }
 
   componentWillMount() {
-    getMyBooks(this.props.token).then((bookList) => {
+    getMyBooks().then((bookList) => {
+      bookListStored = bookList
       this.setState({
-        bookList
+        bookList,
+        dataSource: ds.cloneWithRows(bookList)
       })
     }).catch((e) => {
-      // TODO when token expired
-      clearLocalState({dispatch: this.props.dispatch});
-      console.log(e)
-      this.props.navigator.pop();
+      Alert.alert('Error', `${e}`)
+      // this.props.navigator.pop();
     })
   }
 
@@ -51,19 +59,49 @@ class BookList extends Component {
     }
   }
 
+  _onDelete = (index) => (id) => {
+    // Alert.alert(`${id}`)
+    removeBook(id).then(() => {
+      let {bookList} = this.state
+      bookList.splice(index, 1)
+      bookListStored = bookList
+      this.setState({
+        bookList,
+        dataSource: ds.cloneWithRows(bookList)
+      })
+    }).catch((e) => {
+      Alert.alert(`${e}`)
+    })
+  }
+
+  _onSearch = (text) => {
+    const REG = new RegExp(`.*${text}.*`, "i")
+    let bookList = bookListStored.filter((book) => (book.bookName && REG.test(book.bookName)))
+    this.setState({
+      bookList,
+      dataSource: ds.cloneWithRows(bookList)
+    })
+  }
+
   render() {
     return (
-      <ScrollView>
-        {this.state.bookList.map((book) => {
-          return <BookItem key={book.id} {...book} navigator={this.props.navigator} />
-        })}
-      </ScrollView>
-    );
+      <View>
+        <SearchBar
+          placeholder={"Search"}
+          autoCapitalize={'none'}
+          onChangeText={::this._onSearch}
+        />
+        <ListView
+            enableEmptySections={true}
+            dataSource={this.state.dataSource}
+            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} {...book} navigator={this.props.navigator} onDelete={::this._onDelete(rowID)} />}
+          />
+      </View>
+    )
   }
 }
 
 const mapStateToProps = (state) => ({
-  token: state.user.token
 })
 
 const mapDispatchToProps = (dispatch) => ({
