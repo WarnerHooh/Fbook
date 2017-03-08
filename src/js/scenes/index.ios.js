@@ -8,6 +8,7 @@ import Home from './Home';
 import Scanner from './Scanner';
 import BookInfo from './BookInfo';
 import BookList from './BookList';
+import UserInfo from './UserInfo';
 
 const store = configureStore()
 
@@ -18,7 +19,8 @@ export default () => {
     'fbook.HomeScene':      Home,
     'fbook.ScannerScene':   Scanner,
     'fbook.BookInfoScene':  BookInfo,
-    'fbook.BookListScene':  BookList
+    'fbook.BookListScene':  BookList,
+    'fbook.UserInfoScene':  UserInfo
   };
 
   Object.keys(SCENES).forEach((key) => {

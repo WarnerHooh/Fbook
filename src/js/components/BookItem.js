@@ -12,7 +12,8 @@ import {
 } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import IonicIcon from 'react-native-vector-icons/Ionicons'
 import reactLogo from '../../image/react.png'
 
 export default class BookItem extends Component {
@@ -65,10 +66,10 @@ export default class BookItem extends Component {
   }
 
   render() {
-    let {id, bookName, imageUrl, onDelete} = this.props;
+    let {id, bookName, imageUrl, status, onDelete} = this.props;
     let {likes, comments} = this.state;
 
-    let swipeoutBtns = [
+    let swipeoutBtns = !!status ? [
       {
         text: 'Delete',
         color: 'white',
@@ -79,7 +80,7 @@ export default class BookItem extends Component {
           onDelete(id)
         }
       }
-    ]
+    ] : null
 
     const animationHeight = this.animationValue.interpolate({
       inputRange: [0, 1],
@@ -105,17 +106,18 @@ export default class BookItem extends Component {
                 <Text>
                   <Text style={styles.bookLike} onPress={::this._onToggleLike}>
                     {
-                      likes.status ? <Icon name='heart' color='#FF4A6A' size={15} /> : <Icon name='heart-o' color='#a2a1b8' size={15} />
+                      likes.status ? <FontAwesomeIcon name='heart' color='#FF4A6A' size={15} /> : <FontAwesomeIcon name='heart-o' color='#a2a1b8' size={15} />
                     }
                     <Text> {likes.count} Likes</Text>
                   </Text>
                   <Text>    </Text>
                   <Text style={styles.bookComment}>
-                    <Icon name='commenting-o' color='#a2a1b8' size={15} />
+                    <FontAwesomeIcon name='commenting-o' color='#a2a1b8' size={15} />
                     <Text> {comments.count} Comments</Text>
                   </Text>
                 </Text>
               </View>
+              { !!status ? null : <IonicIcon name="ios-clock-outline" color="#f00" size={20} style={styles.clock} /> }
             </View>
           </TouchableWithoutFeedback>
         </Swipeout>
@@ -157,7 +159,6 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
 
-
   author: {
     alignSelf: 'center',
     paddingTop: 20,
@@ -170,5 +171,8 @@ const styles = StyleSheet.create({
   description: {
     padding: 10,
     color: 'gray',
+  },
+  clock: {
+    marginLeft: 5
   }
 });

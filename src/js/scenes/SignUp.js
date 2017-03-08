@@ -7,6 +7,7 @@ import { Hoshi } from 'react-native-textinput-effects';
 import imageStyle from '../../style/image'
 import colorStyle from '../../style/color'
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 import * as signUpActions from '../actions/signUp'
 
 class SignUp extends Component {
@@ -35,7 +36,6 @@ class SignUp extends Component {
       errorMessage = 'Confirm password does not equal to the password';
     } else {
       this.props.actions.toSignUp({username, email, password});
-
     }
     this.setState({ errorMessage });
   }
@@ -114,6 +114,7 @@ class SignUp extends Component {
               </Text>
             </View>
           </View>
+          <Loading show={this.props.loader} />
         </Image>
     )
   }
@@ -174,7 +175,8 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({signUp}) => ({
+const mapStateToProps = ({signUp, loader}) => ({
+  loader: loader,
   errorMessage: signUp.errorMessage
 })
 

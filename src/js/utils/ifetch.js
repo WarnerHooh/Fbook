@@ -25,23 +25,16 @@ const fitURL = async (PATH) => {
 }
 
 const filterResponse = async (response) => {
-  // if(code == 4000) {
-  //   Alert.alert('', 'Your account has been expired, please sign in again')
-  // } else if(code != 2000) {
-  //   throw new Error(message)
-  // }
-  let {status} = response,
-      rs = null;
-  if(status === 403) {
+  let rs = await response.json()
+  console.log(rs)
+  if(rs.code === '40001') {
     purge()
     Alert.alert('Error', 'Your account has been expired, please sign in again')
-  } else {
-    rs = await response.json()
-    if(status !== 200) {
-      throw new Error(rs.message)
-    }
+  } else if(rs.code !== '10000') {
+    throw new Error(rs.message)
   }
-  return rs;
+
+  return rs.result;
 }
 
 const generator = (type) => async (URL, params) => {

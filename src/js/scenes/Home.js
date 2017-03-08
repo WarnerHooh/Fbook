@@ -58,8 +58,10 @@ class Home extends Component {
     let { token, navigator } = this.props;
     if(token) {
       navigator.push({
-        screen: 'fbook.BookListScene',
-        title: 'Book List'
+        // screen: 'fbook.BookListScene',
+        // title: 'Book List'
+        screen: 'fbook.UserInfoScene',
+        title: 'Profile'
       });
     } else {
       navigator.push({

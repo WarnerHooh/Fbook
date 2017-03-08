@@ -117,6 +117,7 @@ const style = StyleSheet.create({
     padding: 20,
     paddingTop: 100,
     overflow: 'visible',
+    flexDirection: 'column'
   },
   logo: {
     width: 80,

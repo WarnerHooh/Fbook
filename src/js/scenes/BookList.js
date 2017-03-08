@@ -6,6 +6,7 @@ import {
   Alert
 } from 'react-native';
 import SearchBar from 'react-native-search-bar';
+import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -19,7 +20,7 @@ const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => (r1 !== r2) })
 
 let bookListStored = [];
 
-class BookList extends Component {
+export default class BookList extends Component {
   constructor(props) {
     super(props);
 
@@ -27,16 +28,6 @@ class BookList extends Component {
       bookList: [],
       dataSource: ds.cloneWithRows([])
     };
-
-    this.props.navigator.setOnNavigatorEvent(::this._onNavigatorEvent)
-    iconsLoaded.then(() => {
-      this.props.navigator.setButtons({
-        rightButtons: [{
-          icon: iconsMap['sign-out'],
-          id: 'signOut'
-        }]
-      })
-    })
   }
 
   componentWillMount() {
@@ -52,15 +43,7 @@ class BookList extends Component {
     })
   }
 
-  _onNavigatorEvent = (event) => {
-    if (event.id === 'signOut') {
-      this.props.signOut();
-      this.props.navigator.pop();
-    }
-  }
-
   _onDelete = (index) => (id) => {
-    // Alert.alert(`${id}`)
     removeBook(id).then(() => {
       let {bookList} = this.state
       bookList.splice(index, 1)
@@ -85,7 +68,7 @@ class BookList extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <SearchBar
           placeholder={"Search"}
           autoCapitalize={'none'}
@@ -95,17 +78,8 @@ class BookList extends Component {
             enableEmptySections={true}
             dataSource={this.state.dataSource}
             renderRow={(book, sectionID, rowID) => <BookItem key={book.id} {...book} navigator={this.props.navigator} onDelete={::this._onDelete(rowID)} />}
-          />
+        />
       </View>
     )
   }
 }
-
-const mapStateToProps = (state) => ({
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  signOut: bindActionCreators(toSignOut, dispatch)
-})
-
-export default connect(mapStateToProps,mapDispatchToProps)(BookList)
