@@ -12,7 +12,7 @@ export default class ActionButton extends Component{
 
   render() {
     return (
-      <View style={[style.container, this.props.style]}>
+      <View style={[style.container, style.shadow, this.props.style]}>
         <Text style={style.text}>{this.props.text}</Text>
         <Text style={style.filling} onPress={::this._onPress} />
       </View>
@@ -28,7 +28,6 @@ const style = StyleSheet.create({
     backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
   },
   text: {
     fontSize: 24,
@@ -40,5 +39,14 @@ const style = StyleSheet.create({
     top: 0, left: 0,
     padding: 100,
     backgroundColor: 'transparent',
+  },
+  shadow: {
+    shadowOffset: {
+      width: 2,
+      height: 2
+    },
+    shadowColor: '#000',
+    shadowRadius: 3,
+    shadowOpacity: 0.4
   }
 })

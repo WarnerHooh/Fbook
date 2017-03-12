@@ -3,24 +3,22 @@ import {
   StyleSheet,
   ListView,
   View,
+  Text,
   Alert
 } from 'react-native';
 import SearchBar from 'react-native-search-bar';
-import ScrollableTabView from 'react-native-scrollable-tab-view'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import BookItem from '../components/BookItem'
 import { getMyBooks, removeBook } from '../actions/book'
-import { toSignOut } from '../actions/signIn'
-import { iconsMap, iconsLoaded } from '../utils/appIcons'
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => (r1 !== r2) })
 
 let bookListStored = [];
 
-export default class BookList extends Component {
+class BookList extends Component {
   constructor(props) {
     super(props);
 
@@ -31,7 +29,7 @@ export default class BookList extends Component {
   }
 
   componentWillMount() {
-    getMyBooks().then((bookList) => {
+    getMyBooks(1).then((bookList) => {
       bookListStored = bookList
       this.setState({
         bookList,
@@ -67,19 +65,39 @@ export default class BookList extends Component {
   }
 
   render() {
-    return (
-      <View style={{flex: 1}}>
-        <SearchBar
-          placeholder={"Search"}
-          autoCapitalize={'none'}
-          onChangeText={::this._onSearch}
-        />
-        <ListView
+    const { bookList, dataSource } = this.state
+    if(bookList.length) {
+      return (
+        <View style={style.container}>
+          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch} />
+          <ListView
             enableEmptySections={true}
-            dataSource={this.state.dataSource}
-            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} {...book} navigator={this.props.navigator} onDelete={::this._onDelete(rowID)} />}
-        />
-      </View>
-    )
+            dataSource={dataSource}
+            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator} onDelete={::this._onDelete(rowID)} />}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View style={[style.container, style.noRecordView]}>
+          <Text style={style.noRecordText}>No Record.</Text>
+        </View>
+      )
+    }
   }
 }
+
+export default connect(({user}) => ({user}), null)(BookList)
+
+const style = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
+  noRecordView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noRecordText: {
+    color: '#ccc'
+  }
+})

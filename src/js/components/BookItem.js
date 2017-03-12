@@ -32,15 +32,13 @@ export default class BookItem extends Component {
   }
 
   _onPress = () => {
-    let {bookName, imageUrl, brief, author} = this.props;
+    let {book} = this.props;
     this.props.navigator.push({
       screen: 'fbook.BookInfoScene',
       title: 'book',
       passProps: {
         isSaved: true,
-        bookData: {
-          bookName, imageUrl, brief, author
-        }
+        bookData: book
       }
     })
   }
@@ -66,10 +64,11 @@ export default class BookItem extends Component {
   }
 
   render() {
-    let {id, bookName, imageUrl, status, onDelete} = this.props;
+    let {id, bookName, imageUrl, status} = this.props.book;
+    let {onDelete} = this.props;
     let {likes, comments} = this.state;
 
-    let swipeoutBtns = !!status ? [
+    let swipeoutBtns = (!status && onDelete) ? [
       {
         text: 'Delete',
         color: 'white',
@@ -117,7 +116,7 @@ export default class BookItem extends Component {
                   </Text>
                 </Text>
               </View>
-              { !!status ? null : <IonicIcon name="ios-clock-outline" color="#f00" size={20} style={styles.clock} /> }
+              { !status ? null : <IonicIcon name="ios-clock-outline" color="#f00" size={20} style={styles.clock} /> }
             </View>
           </TouchableWithoutFeedback>
         </Swipeout>

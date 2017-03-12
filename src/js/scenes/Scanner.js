@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, Text, Image, Dimensions, StyleSheet} from 'react-native'
 
 import Scanner from '../components/Scanner'
-import Book from './BookInfo'
 import ScanningBackground from '../../image/scanning-bg.png'
 
 export default class extends Component {
@@ -12,7 +11,7 @@ export default class extends Component {
 
     return (isbn) => {
       !flag && this.props.navigator.resetTo({
-        screen: 'fbook.BookInfoScene',
+        screen: 'fbook.ScanResultScene',
         title: 'Book info',
         passProps: {
           isbn: isbn
@@ -25,7 +24,7 @@ export default class extends Component {
 
   testPress() {
     this.props.navigator.resetTo({
-      screen: 'fbook.BookInfoScene',
+      screen: 'fbook.ScanResultScene',
       title: 'Book info',
       passProps: {
         isbn: '9787506365413'
@@ -43,9 +42,9 @@ export default class extends Component {
           <Text style={ style.tips }>My QR Code</Text>
         </View>
         <Image source={ScanningBackground} style={style.scanningBackground} />
-        {/*<View style={{position: 'absolute'}}>*/}
-          {/*<Text onPress={::this.testPress}>Hello</Text>*/}
-        {/*</View>*/}
+        <View style={{position: 'absolute'}}>
+          <Text onPress={::this.testPress}>Hello</Text>
+        </View>
       </View>
     )
   }

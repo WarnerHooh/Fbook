@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Navigation } from 'react-native-navigation';
 
 import Button from '../components/Button'
 import Search from '../components/Search'
@@ -95,6 +96,22 @@ class Home extends Component {
     });
   }
 
+  _onSearch = () => {
+    Navigation.showModal({
+      screen: "fbook.SearchScene", // unique ID registered with Navigation.registerScreen
+      title: "Search", // title of the screen as appears in the nav bar (optional)
+      passProps: {}, // simple serializable object that will pass as props to the modal (optional)
+      navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+      navigatorButtons: {leftButtons: [
+        {
+          title: 'Back',
+          id: 'goBack'
+        }
+      ]}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+      animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+    });
+  }
+
   render() {
     let { token } = this.props;
     return (
@@ -105,7 +122,7 @@ class Home extends Component {
         <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
         {/*<MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ douban.dbcl2 ? '#2E9968' : '#ccc' } />*/}
         {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
-        {/*<Text>{ JSON.stringify(this.props.user) }</Text>*/}
+        <Text onPress={::this._onSearch}>{ token }</Text>
       </View>
     )
   }

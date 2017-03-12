@@ -26,7 +26,10 @@ class UserInfo extends Component {
 
   constructor(props) {
     super(props);
+
+    let {username, telephone, email, address} = props.user;
     this.state = {
+      username, telephone, email, address
     };
   }
 
@@ -48,10 +51,19 @@ class UserInfo extends Component {
     this.props.navigator.pop();
   }
 
+  _handleChangeText = (name) => {
+    return (text) => {
+      this.setState({
+        [name]: text
+      })
+    }
+  }
+
   componentWillMount() {
   }
 
   render() {
+    let {username, telephone, email, address} = this.state;
     return (
       <ScrollView>
         <Image source={require('../../image/user-bg.png')} style={imageStyle.backgroundImage}>
@@ -63,15 +75,19 @@ class UserInfo extends Component {
             <View style={styles.infoBox}>
                 <View style={{flex: 1, backgroundColor: '#fff'}}>
                   <ListItem label="Username">
-                    <TextInput style={styles.textInput} value="Warner" />
+                    <TextInput style={styles.textInput} value={username} onChangeText={this._handleChangeText('username')} />
                   </ListItem>
 
                   <ListItem label="Email">
-                    <TextInput style={styles.textInput} value="warner.hooh@gmail.com" />
+                    <TextInput style={styles.textInput} value={email} onChangeText={this._handleChangeText('email')} />
                   </ListItem>
 
                   <ListItem label="Mobile">
-                    <TextInput style={styles.textInput} value="+86 18108013333" />
+                    <TextInput style={styles.textInput} value={telephone} onChangeText={this._handleChangeText('telephone')} />
+                  </ListItem>
+
+                  <ListItem label="Address">
+                    <TextInput style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} />
                   </ListItem>
 
                   <ListItem label="Facebook">
@@ -86,10 +102,14 @@ class UserInfo extends Component {
                 </View>
 
                 <View style={{flex: 1, borderTopWidth: 1, borderColor: '#eee', marginTop: 20}}>
-                  <ListItem label="My Books" onPress={()=>{this.props.navigator.push({
+                  <ListItem label="Possess" onPress={()=>{this.props.navigator.push({
                       screen: 'fbook.BookListScene',
-                      title: 'Book List'
+                      title: 'Possess'
                     })}} />
+                  <ListItem label="Borrowed & Lent" onPress={()=>{this.props.navigator.push({
+                    screen: 'fbook.BorrowedLentListScene',
+                    title: 'Borrowed & Lent'
+                  })}} />
                   <ListItem label="History" onPress={()=>{}} />
                 </View>
 
@@ -146,7 +166,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = () => ({
+const mapStateToProps = ({user}) => ({
+  user
 })
 
 const mapDispatchToProps = (dispatch) => ({

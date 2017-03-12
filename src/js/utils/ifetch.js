@@ -33,7 +33,6 @@ const filterResponse = async (response) => {
   } else if(rs.code !== '10000') {
     throw new Error(rs.message)
   }
-
   return rs.result;
 }
 
