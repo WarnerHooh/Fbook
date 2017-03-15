@@ -10,7 +10,6 @@ import Button from '../components/Button'
 import Search from '../components/Search'
 import * as signInActions from '../actions/signIn'
 import { iconsMap, iconsLoaded } from '../utils/appIcons'
-var SearchBar = require('react-native-search-bar');
 
 
 class Home extends Component {
@@ -118,11 +117,13 @@ class Home extends Component {
       <View style={ style.container }>
         <Image source={require('../../image/logo.png')} style={style.logo} />
         {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
-        <MaterialCommunityIcon onPress={::this.navigateToScanner} style={ style.scanPanel } name="qrcode-scan" size={100} color="#bbb" />
-        <FontAwesomeIcon onPress={::this.handleProfile} style={ style.user } name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
-        {/*<MaterialCommunityIcon onPress={::this.showDoubanModal} style={ style.douban } name="douban" size={30} color={ douban.dbcl2 ? '#2E9968' : '#ccc' } />*/}
+        <View style={{marginHorizontal: 20, top: 70}}>
+          <Search onFocus={::this._onSearch} />
+        </View>
+        <FontAwesomeIcon onPress={::this.handleProfile} style={[style.toolIcon, style.userIcon]} name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
+        <MaterialCommunityIcon onPress={::this.navigateToScanner} style={[style.toolIcon, style.scannerIcon]} name="qrcode-scan" size={25} color="#007aff" />
         {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
-        <Text onPress={::this._onSearch}>{ token }</Text>
+        {/*<Text onPress={::this._onSearch}>{ token }</Text>*/}
       </View>
     )
   }
@@ -140,21 +141,19 @@ const style = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 100
   },
-  scanPanel: {
+  scanner: {
     textAlign: 'center',
-    marginTop: 100,
   },
-  user: {
+  toolIcon: {
     position: 'absolute',
     bottom: 30,
+    backgroundColor: '#fff'
+  },
+  userIcon: {
     left: 30,
-    backgroundColor: '#fff'
   },
-  douban: {
-    position: 'absolute',
-    bottom: 30,
+  scannerIcon: {
     right: 30,
-    backgroundColor: '#fff'
   }
 })
 

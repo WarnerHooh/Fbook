@@ -29,7 +29,7 @@ class BookList extends Component {
   }
 
   componentWillMount() {
-    getMyBooks(1).then((bookList) => {
+    getMyBooks(this.props.user.id).then((bookList) => {
       bookListStored = bookList
       this.setState({
         bookList,

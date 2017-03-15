@@ -15,7 +15,7 @@ export default (BookInfo, {isSaved, isBorrowed}) => {
       super()
       this.state = {
         isSaved: false,
-        isBorrowed: false
+        showBorrow: false
       }
     }
 

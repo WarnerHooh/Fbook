@@ -1,6 +1,6 @@
 import { switchLoader } from './loader'
 import { updateUser } from './user'
-import { purge } from '../store/index'
+import { purge } from '../store'
 import { POST } from '../utils/ifetch'
 
 export const SIGNOUT = 'SIGNOUT'

@@ -73,14 +73,12 @@ class ScanResult extends Component {
   }
 
   _markAsPossess = () => {
-    if(this.props.token) {
-      this.props.addBook.then(() => {
-        this.setState({isSaved: true})
-        Alert.alert('', 'Added to my book list');
-      }).catch(() => {
-        Alert.alert('', 'Add failed');
-      })
-    }
+    addBook(this.state.bookData).then(() => {
+      this.setState({isSaved: true})
+      Alert.alert('', 'Added to my book list');
+    }).catch(() => {
+      Alert.alert('', `Book already existed`);
+    })
   }
 
   componentWillMount() {
@@ -139,8 +137,4 @@ const mapStateToProps = ({user}) => ({
   token: user.token,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  addBook: bindActionCreators(addBook, dispatch)
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScanResult)
+export default connect(mapStateToProps)(ScanResult)

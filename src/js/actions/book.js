@@ -17,5 +17,10 @@ export const searchBook = async (bookName) => {
 }
 
 export const borrowBook = async (params) => {
+  console.log(params)
   return await POST('/records', params)
+}
+
+export const borrowedBooks = async (params) => {
+  return await GET(`/records`, params)
 }

@@ -1,26 +1,23 @@
-import { AsyncStorage, Alert } from 'react-native'
-import { purge } from '../store'
+import { Alert, AsyncStorage } from 'react-native'
+import { getState, purge } from '../store/index'
 
 const API_SERVER = 'http://182.254.228.128:3000'
 
-const assembleToken = async () => {
-  let userState = await AsyncStorage.getItem('user')
-  let user = JSON.parse(userState)
-  return user ? user.token : null;
+const fitPath = (params) => (PATH) => {
+  if(!params) return PATH;
+
+  let URLParams = PATH.split('?')[1],
+    paramsStr = Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&')
+
+  return PATH + (URLParams ? '&' : '?') + paramsStr
 }
 
-const fitURL = async (PATH) => {
-  let URLParams = PATH.split('?')[1]
-  let token = await assembleToken()
+const assembleToken = (PATH) => {
+  let {token} = getState('user')
+  return token ? fitPath({token})(PATH) : PATH
+}
 
-  if(token) {
-    if(URLParams === undefined) {
-      return `${API_SERVER}${PATH}?token=${token}`
-    } else if(!(/token=[^&]+.*/.test(URLParams))) {
-      return `${API_SERVER}${PATH}&token=${token}`
-    }
-  }
-
+const fitURL = (PATH) => {
   return `${API_SERVER}${PATH}`
 }
 
@@ -36,15 +33,16 @@ const filterResponse = async (response) => {
   return rs.result;
 }
 
-const generator = (type) => async (URL, params) => {
-  let _URL = await fitURL(URL);
+const generator = (type) => async (PATH, params) => {
+  let _URL = await assembleToken(PATH);
   let response;
-
-  console.log(_URL)
-
   if(type === 'GET') {
+    _URL = fitURL(fitPath(params)(_URL))
+    console.log(_URL)
     response = await fetch(_URL);
   } else {
+    _URL = fitURL(_URL)
+    console.log(_URL)
     response = await fetch(_URL, {
       method: type,
       headers: {

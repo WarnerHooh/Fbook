@@ -15,42 +15,43 @@ import { connect } from 'react-redux'
 import ActionButton from '../components/ActionButton'
 import BookDetail from '../components/BookDetail'
 import onloadingPic from '../../image/onloading.jpg'
-import colorStyle from '../../style/color'
 import { addBook, borrowBook } from '../actions/book'
 
 class BookInfo extends Component {
 
   constructor(props) {
     super(props);
+    const {userId, bookData: {status, user_id}} = props
     this.state = {
-      isBorrowed: false
+      showBorrow: !status && userId != user_id
     };
 
-    this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent);
+    // this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent);
   }
 
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        title: 'Back',
-        id: 'goBack'
-      }
-    ]
-  }
-
-  onNavigatorEvent(event) {
-    if (event.id === 'goBack') {
-      this.props.navigator.pop();
-    }
-  }
+  // static navigatorButtons = {
+  //   leftButtons: [
+  //     {
+  //       title: 'Back',
+  //       id: 'goBack'
+  //     }
+  //   ]
+  // }
+  //
+  // onNavigatorEvent(event) {
+  //   if (event.id === 'goBack') {
+  //     this.props.navigator.pop();
+  //   }
+  // }
 
   _markAsBorrowed = () => {
-    const { id, bookName, user_id } = this.props.bookData
+    const { userId, bookData } = this.props
+    const { id, bookName } = bookData
 
-    borrowBook({bookId: id, userId: user_id}).then(() => {
+    borrowBook({bookId: id, userId}).then(() => {
       Alert.alert(`Book 『${bookName}』 borrowed`);
       this.setState({
-        isBorrowed: true
+        showBorrow: false
       })
     }).catch((e) => {
       Alert.alert(`${e}`)
@@ -58,16 +59,16 @@ class BookInfo extends Component {
   }
 
   render() {
-    let { token, bookData } = this.props;
-    let { isBorrowed } = this.state;
+    let { token, bookData, bookOwner, borrowRecord } = this.props;
+    let { showBorrow } = this.state;
 
     return (
       <View style={styles.container}>
-        <BookDetail bookData={bookData} />
+        <BookDetail bookData={bookData} bookOwner={bookOwner} borrowRecord={borrowRecord} />
 
-        { isBorrowed ? null : <View style={styles.actionButton}>
-          <ActionButton style={{backgroundColor: token ? '#2E9968' : '#ccc', marginRight: 20}} text="借" onAction={::this._markAsBorrowed} />
-        </View> }
+        { showBorrow ? <View style={styles.actionButtonView}>
+          <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="借" onAction={::this._markAsBorrowed} />
+        </View> : null }
       </View>
     );
   }
@@ -77,17 +78,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  actionButton: {
+  actionButtonView: {
     width: Dimensions.get('window').width,
     position: 'absolute',
     bottom: 20,
     flexDirection: 'row',
     justifyContent: 'flex-end'
+  },
+  actionButton: {
+    marginRight: 20
   }
 });
 
 const mapStateToProps = ({user}) => ({
   token: user.token,
+  userId: user.id
 })
 
 const mapDispatchToProps = (dispatch) => ({

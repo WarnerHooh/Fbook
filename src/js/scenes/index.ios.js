@@ -12,7 +12,6 @@ import BookList from './BookList';
 import UserInfo from './UserInfo';
 import Search from './Search';
 import BorrowedLentList from './BorrowedLentList';
-
 const store = configureStore()
 
 export default () => {

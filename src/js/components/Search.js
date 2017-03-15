@@ -13,34 +13,18 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 export default class Search extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      expand: false,
-      text: '',
-    }
-  }
-
-  onSearch = () => {
-    this.props.onSearch(this.state.text)
-  }
-
-  onTouch = () => {
-    let { expand } = this.state;
-    this.setState({
-      expand: !expand
-    })
-    expand && this.onSearch();
   }
 
   render() {
     return (
       <View style={style.container}>
-        { this.state.expand ? <TextInput
+       <TextInput
           style={style.input}
           placeholder="Type here to search!"
-          value={this.state.text}
-          onChangeText={(text) => this.setState({text})}
-        /> : null}
-        <Icon onPress={::this.onTouch} style={style.icon} name="search" size={20} color={'#000'}/>
+          onFocus={this.props.onFocus}
+          ref="input"
+        />
+        <Icon style={style.icon} name="search" onPress={()=>{this.refs.input.focus()}} size={20} color={'#000'}/>
       </View>
     );
   }

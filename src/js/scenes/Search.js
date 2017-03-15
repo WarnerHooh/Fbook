@@ -55,7 +55,7 @@ export default class extends Component {
         <ListView
           enableEmptySections={true}
           dataSource={dataSource}
-          renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator} />}
+          renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} bookOwner={book.user} navigator={this.props.navigator} />}
         />
       </View>
     )

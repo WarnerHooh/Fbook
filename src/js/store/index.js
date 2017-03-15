@@ -4,11 +4,21 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 
 import reducers from '../reducers'
+import { updateUser } from '../actions/user'
 
-let persistor;
+let persistor, store;
 
-export default () => {
-  const store = createStore(
+export function purge () {
+  persistor && persistor.purge()
+  store.dispatch(updateUser({}))
+}
+
+export function getState(key) {
+  return store && store.getState()[key]
+}
+
+export default function() {
+  store = createStore(
     reducers,
     undefined,
     compose(
@@ -22,8 +32,4 @@ export default () => {
     whitelist: 'user'
   })
   return store
-}
-
-export const purge = () => {
-  persistor && persistor.purge()
 }
