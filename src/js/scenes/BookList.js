@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
   StyleSheet,
   ListView,
@@ -13,8 +13,8 @@ import { connect } from 'react-redux'
 
 import BookItem from '../components/BookItem'
 import { getMyBooks, removeBook } from '../actions/book'
-
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => (r1 !== r2) })
+import Header from '../components/Header'
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => (r1 !== r2)})
 
 let bookListStored = [];
 
@@ -65,15 +65,17 @@ class BookList extends Component {
   }
 
   render() {
-    const { bookList, dataSource } = this.state
-    if(bookList.length) {
+    const {bookList, dataSource} = this.state
+    if (bookList.length) {
       return (
         <View style={style.container}>
-          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch} />
+          <Header title="Owned Books"/>
+          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch}/>
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}
-            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator} onDelete={::this._onDelete(rowID)} />}
+            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator}
+                                                             onDelete={::this._onDelete(rowID)}/>}
           />
         </View>
       )

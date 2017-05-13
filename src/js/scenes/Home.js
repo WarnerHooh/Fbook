@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableHighlight, Image, Alert, StyleSheet } from 'react-native'
+import { View, Text, TouchableHighlight, TabBarIOS, Image, Alert, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -11,6 +11,9 @@ import Search from '../components/Search'
 import * as signInActions from '../actions/signIn'
 import { iconsMap, iconsLoaded } from '../utils/appIcons'
 
+import BookList from './BookList';
+import BorrowedLentList from './BorrowedLentList';
+import UserInfo from './UserInfo'
 
 class Home extends Component {
   constructor(props) {
@@ -55,8 +58,8 @@ class Home extends Component {
   }
 
   handleProfile() {
-    let { token, navigator } = this.props;
-    if(token) {
+    let {token, navigator} = this.props;
+    if (token) {
       navigator.push({
         // screen: 'fbook.BookListScene',
         // title: 'Book List'
@@ -74,7 +77,7 @@ class Home extends Component {
   }
 
   showDoubanModal() {
-    let { token, navigator } = this.props;
+    let {token, navigator} = this.props;
     token && navigator.showLightBox({
       screen: "fbook.DoubanScene",
       passProps: {},
@@ -85,7 +88,7 @@ class Home extends Component {
     });
   }
 
-  handleResetNavigation({ token, navigator }) {
+  handleResetNavigation({token, navigator}) {
     token || navigator.resetTo({
       screen: 'fbook.SignInScene',
       animated: false,
@@ -101,30 +104,97 @@ class Home extends Component {
       title: "Search", // title of the screen as appears in the nav bar (optional)
       passProps: {}, // simple serializable object that will pass as props to the modal (optional)
       navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-      navigatorButtons: {leftButtons: [
-        {
-          title: 'Back',
-          id: 'goBack'
-        }
-      ]}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+      navigatorButtons: {
+        leftButtons: [
+          {
+            title: 'Back',
+            id: 'goBack'
+          }
+        ]
+      }, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
       animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
     });
   }
 
-  render() {
-    let { token } = this.props;
+  _renderHome(token) {
     return (
       <View style={ style.container }>
-        <Image source={require('../../image/logo.png')} style={style.logo} />
-        {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
-        <View style={{marginHorizontal: 20, top: 70}}>
-          <Search onFocus={::this._onSearch} />
-        </View>
-        <FontAwesomeIcon onPress={::this.handleProfile} style={[style.toolIcon, style.userIcon]} name="user-circle-o" size={30} color={ token ? '#2E9968' : '#ccc' } />
-        <MaterialCommunityIcon onPress={::this.navigateToScanner} style={[style.toolIcon, style.scannerIcon]} name="qrcode-scan" size={25} color="#007aff" />
-        {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
-        {/*<Text onPress={::this._onSearch}>{ token }</Text>*/}
+      <Image source={require('../../image/logo.png')} style={style.logo}/>
+      {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
+      <View style={{marginHorizontal: 20, top: 70}}>
+        <Search onFocus={::this._onSearch}/>
       </View>
+      <FontAwesomeIcon onPress={::this.handleProfile} style={[style.toolIcon, style.userIcon,]} name="user-circle-o"
+                       size={30} color={ token ? '#2E9968' : '#ccc' }/>
+      <MaterialCommunityIcon onPress={::this.navigateToScanner} style={[style.toolIcon, style.scannerIcon,]}
+                             name="qrcode-scan" size={25} color="#007aff"/>
+      {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
+      {/*<Text onPress={::this._onSearch}>{ token }</Text>*/}
+    </View>)
+  }
+
+
+  state = {
+    selectedTab: 'home',
+    notifCount: 0,
+    presses: 0,
+  };
+
+  render() {
+    let {token} = this.props;
+    return (
+
+      <TabBarIOS
+        unselectedTintColor="grey"
+        tintColor="#006600"
+        unselectedItemTintColor="red"
+        barTintColor="white">
+        <TabBarIOS.Item
+          title="Home"
+          icon={require('../../image/home.png')}
+          selected={this.state.selectedTab === 'home'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'home',
+            });
+          }}>
+          {this._renderHome(token)}
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Record"
+          icon={require('../../image/record.png')}
+          selected={this.state.selectedTab === 'record'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'record',
+            });
+          }}>
+          <BorrowedLentList/>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Owned"
+          icon={require('../../image/owned-books.png')}
+          selected={this.state.selectedTab === 'owned'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'owned',
+            });
+          }}>
+          <BookList/>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Personal"
+          icon={require('../../image/personal-24.png')}
+          selected={this.state.selectedTab === 'personal'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'personal',
+            });
+          }}>
+          <UserInfo/>
+        </TabBarIOS.Item>
+
+      </TabBarIOS>
     )
   }
 }
@@ -146,7 +216,7 @@ const style = StyleSheet.create({
   },
   toolIcon: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 70,
     backgroundColor: '#fff'
   },
   userIcon: {
@@ -154,7 +224,7 @@ const style = StyleSheet.create({
   },
   scannerIcon: {
     right: 30,
-  }
+  },
 })
 
 const mapStateToProps = ({user}) => {
