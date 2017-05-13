@@ -76,7 +76,8 @@ class ScanResult extends Component {
     addBook(this.state.bookData).then(() => {
       this.setState({isSaved: true})
       Alert.alert('', 'Added to my book list');
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e);
       Alert.alert('', `Book already existed`);
     })
   }

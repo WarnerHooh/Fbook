@@ -94,6 +94,7 @@ export default connect(({user}) => ({user}), null)(BookList)
 const style = StyleSheet.create({
   container: {
     flexGrow: 1,
+    bottom:50,
   },
   noRecordView: {
     alignItems: 'center',

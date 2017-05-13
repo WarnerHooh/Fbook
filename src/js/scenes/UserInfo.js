@@ -90,27 +90,15 @@ class UserInfo extends Component {
                     <TextInput style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} />
                   </ListItem>
 
-                  <ListItem label="Facebook">
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                      <Switch
-                        onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
-                        onTintColor='#FF4A6A'
-                        style={styles.switcher}
-                        value={this.state.falseSwitchIsOn} />
-                    </View>
-                  </ListItem>
-                </View>
-
-                <View style={{flex: 1, borderTopWidth: 1, borderColor: '#eee', marginTop: 20}}>
-                  <ListItem label="Possess" onPress={()=>{this.props.navigator.push({
-                      screen: 'fbook.BookListScene',
-                      title: 'Possess'
-                    })}} />
-                  <ListItem label="Borrowed & Lent" onPress={()=>{this.props.navigator.push({
-                    screen: 'fbook.BorrowedLentListScene',
-                    title: 'Borrowed & Lent'
-                  })}} />
-                  <ListItem label="History" onPress={()=>{}} />
+                  {/*<ListItem label="Facebook">*/}
+                    {/*<View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>*/}
+                      {/*<Switch*/}
+                        {/*onValueChange={(value) => this.setState({falseSwitchIsOn: value})}*/}
+                        {/*onTintColor='#FF4A6A'*/}
+                        {/*style={styles.switcher}*/}
+                        {/*value={this.state.falseSwitchIsOn} />*/}
+                    {/*</View>*/}
+                  {/*</ListItem>*/}
                 </View>
 
                 <View style={{flex: 1, borderTopWidth: 1, borderColor: '#eee', marginTop: 20}}>

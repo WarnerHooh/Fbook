@@ -21,14 +21,14 @@ class Home extends Component {
 
     // this.handleResetNavigation(props)
     this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent)
-    iconsLoaded.then(() => {
-      this.props.navigator.setButtons({
-        rightButtons: [{
-          icon: iconsMap['qrcode'],
-          id: 'scan'
-        }]
-      })
-    })
+    // iconsLoaded.then(() => {
+    //   this.props.navigator.setButtons({
+    //     rightButtons: [{
+    //       icon: iconsMap['qrcode'],
+    //       id: 'scan'
+    //     }]
+    //   })
+    // })
   }
 
   // static navigatorButtons = {
@@ -59,14 +59,7 @@ class Home extends Component {
 
   handleProfile() {
     let {token, navigator} = this.props;
-    if (token) {
-      navigator.push({
-        // screen: 'fbook.BookListScene',
-        // title: 'Book List'
-        screen: 'fbook.UserInfoScene',
-        title: 'Profile'
-      });
-    } else {
+    if (!token) {
       navigator.push({
         screen: 'fbook.SignInScene',
         navigatorStyle: {
@@ -119,15 +112,15 @@ class Home extends Component {
   _renderHome(token) {
     return (
       <View style={ style.container }>
+        <MaterialCommunityIcon onPress={::this.navigateToScanner} style={[style.toolIcon, style.scannerIcon,]}
+                               name="qrcode-scan" size={25} color="#007aff"/>
       <Image source={require('../../image/logo.png')} style={style.logo}/>
       {/*<SearchBar ref='searchBar' placeholder='Search' onSearchButtonPress={(s) => {Alert.alert('', s)}} />*/}
       <View style={{marginHorizontal: 20, top: 70}}>
         <Search onFocus={::this._onSearch}/>
       </View>
-      <FontAwesomeIcon onPress={::this.handleProfile} style={[style.toolIcon, style.userIcon,]} name="user-circle-o"
-                       size={30} color={ token ? '#2E9968' : '#ccc' }/>
-      <MaterialCommunityIcon onPress={::this.navigateToScanner} style={[style.toolIcon, style.scannerIcon,]}
-                             name="qrcode-scan" size={25} color="#007aff"/>
+      {/*<FontAwesomeIcon onPress={::this.handleProfile} style={[style.toolIcon, style.userIcon,]} name="user-circle-o"*/}
+                       {/*size={30} color={ token ? '#2E9968' : '#ccc' }/>*/}
       {/*<Button onButtonPress={ this.props.actions.toSignOut }>Sign Out</Button>*/}
       {/*<Text onPress={::this._onSearch}>{ token }</Text>*/}
     </View>)
@@ -190,6 +183,7 @@ class Home extends Component {
             this.setState({
               selectedTab: 'personal',
             });
+            this.handleProfile();
           }}>
           <UserInfo/>
         </TabBarIOS.Item>
@@ -216,7 +210,7 @@ const style = StyleSheet.create({
   },
   toolIcon: {
     position: 'absolute',
-    bottom: 70,
+    top: 20,
     backgroundColor: '#fff'
   },
   userIcon: {
