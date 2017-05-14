@@ -69,6 +69,7 @@ class BookList extends Component {
     if (bookList.length) {
       return (
         <View style={style.container}>
+          <Header title="Owned Books"/>
           <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch}/>
           <ListView
             enableEmptySections={true}

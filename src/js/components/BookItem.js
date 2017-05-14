@@ -33,7 +33,7 @@ export default class BookItem extends Component {
 
   _onPress = () => {
     let {book, bookOwner, borrowRecord} = this.props;
-    console.log(borrowRecord)
+    console.log('on pressed....')
     this.props.navigator.push({
       screen: 'fbook.BookInfoScene',
       title: 'book',
