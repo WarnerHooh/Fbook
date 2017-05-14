@@ -173,7 +173,7 @@ class Home extends Component {
               selectedTab: 'owned',
             });
           }}>
-          <BookList/>
+          <BookList navigator={this.props.navigator}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Personal"
