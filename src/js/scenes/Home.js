@@ -162,7 +162,7 @@ class Home extends Component {
               selectedTab: 'record',
             });
           }}>
-          <BorrowedLentList/>
+          <BorrowedLentList navigator={this.props.navigator}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Owned"
@@ -185,7 +185,7 @@ class Home extends Component {
             });
             this.handleProfile();
           }}>
-          <UserInfo/>
+          <UserInfo navigator={this.props.navigator}/>
         </TabBarIOS.Item>
 
       </TabBarIOS>

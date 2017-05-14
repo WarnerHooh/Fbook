@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {
   Text,
   View,
@@ -15,15 +15,23 @@ import { connect } from 'react-redux'
 import ActionButton from '../components/ActionButton'
 import BookDetail from '../components/BookDetail'
 import onloadingPic from '../../image/onloading.jpg'
-import { addBook, borrowBook } from '../actions/book'
+import { addBook, borrowBook, returnBook } from '../actions/book'
 
 class BookInfo extends Component {
 
   constructor(props) {
     super(props);
-    const {userId, bookData: {status, user_id}} = props
+    const {userId, bookData: {status, user_id}, borrowRecord} = props
+
+    let canReturn = false;
+    if (borrowRecord) {
+      if (status && userId == borrowRecord.user.id) {
+        canReturn = true;
+      }
+    }
     this.state = {
-      showBorrow: !status && userId != user_id
+      showBorrow: !status && userId != user_id,
+      showReturn: canReturn,
     };
 
     // this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent);
@@ -44,14 +52,29 @@ class BookInfo extends Component {
   //   }
   // }
 
+  _returnBook = ()=> {
+    const {borrowRecord, bookData} = this.props;
+    const {id, user}=borrowRecord;
+
+    returnBook({id, userId: user.id, bookId: bookData.id}).then(()=> {
+      Alert.alert(`Book 『${bookData.bookName}』 returned`);
+      this.setState({
+        showBorrow: true,
+      })
+    }).catch((e)=> {
+      Alert.alert(`${e}`)
+    })
+  }
+
   _markAsBorrowed = () => {
-    const { userId, bookData } = this.props
-    const { id, bookName } = bookData
+    const {userId, bookData} = this.props;
+    const {id, bookName} = bookData;
 
     borrowBook({bookId: id, userId}).then(() => {
       Alert.alert(`Book 『${bookName}』 borrowed`);
       this.setState({
-        showBorrow: false
+        showBorrow: false,
+        showReturn: true,
       })
     }).catch((e) => {
       Alert.alert(`${e}`)
@@ -59,15 +82,22 @@ class BookInfo extends Component {
   }
 
   render() {
-    let { token, bookData, bookOwner, borrowRecord } = this.props;
-    let { showBorrow } = this.state;
+    let {token, bookData, bookOwner, borrowRecord} = this.props;
+    console.log(`borrowRecord:${borrowRecord}`)
+    let {showBorrow, showReturn} = this.state;
 
     return (
       <View style={styles.container}>
-        <BookDetail bookData={bookData} bookOwner={bookOwner} borrowRecord={borrowRecord} />
+        <BookDetail bookData={bookData} bookOwner={bookOwner} borrowRecord={borrowRecord}/>
 
         { showBorrow ? <View style={styles.actionButtonView}>
-          <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="借" onAction={::this._markAsBorrowed} />
+          <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="借"
+                        onAction={::this._markAsBorrowed}/>
+        </View> : null }
+
+        { showReturn ? <View style={styles.actionButtonView}>
+          <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="还"
+                        onAction={::this._returnBook}/>
         </View> : null }
       </View>
     );
