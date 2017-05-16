@@ -46,7 +46,7 @@ class BorowedLentList extends Component {
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}
-            renderRow={({id, book, user, startTime, endTime}, sectionID, rowID) => <BookItem key={id} book={book} borrowRecord={{id, user, startTime, endTime}} navigator={this.props.navigator} />}
+            renderRow={({id, book, user, startTime, endTime}, sectionID, rowID) => <BookItem key={id} book={book} borrowRecord={{id, user, startTime, endTime}} ifRecord='false' navigator={this.props.navigator} />}
           />
         </View>
 

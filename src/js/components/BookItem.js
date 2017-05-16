@@ -32,7 +32,7 @@ export default class BookItem extends Component {
   }
 
   _onPress = () => {
-    let {book, bookOwner, borrowRecord} = this.props;
+    let {book, bookOwner, borrowRecord, ifRecord} = this.props;
     console.log('on pressed....')
     this.props.navigator.push({
       screen: 'fbook.BookInfoScene',
@@ -41,7 +41,8 @@ export default class BookItem extends Component {
         isSaved: true,
         bookData: book,
         bookOwner,
-        borrowRecord
+        borrowRecord,
+        ifRecord,
       }
     })
   }

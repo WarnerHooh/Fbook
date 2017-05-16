@@ -21,7 +21,7 @@ class BookInfo extends Component {
 
   constructor(props) {
     super(props);
-    const {userId, bookData: {status, user_id}, borrowRecord} = props
+    const {userId, bookData: {status, user_id}, borrowRecord,ifRecord} = props
 
     let canReturn = false;
     if (borrowRecord) {
@@ -30,7 +30,7 @@ class BookInfo extends Component {
       }
     }
     this.state = {
-      showBorrow: !status && userId != user_id,
+      showBorrow: !status && userId != user_id && !ifRecord,
       showReturn: canReturn,
     };
 

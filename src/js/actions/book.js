@@ -26,6 +26,6 @@ export const borrowedBooks = async(params) => {
 }
 
 export const returnBook = async(params) => {
-  console.log(`return books params:${params}`)
+  console.log(`return books params:${JSON.stringify(params)}`)
   return await PUT(`/records`, params)
 }
