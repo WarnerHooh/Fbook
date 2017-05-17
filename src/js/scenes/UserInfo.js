@@ -48,7 +48,13 @@ class UserInfo extends Component {
 
   _handleSignOut = () => {
     this.props.signOut();
-    this.props.navigator.pop();
+    // this.props.navigator.pop();
+    this.props.navigator.resetTo({
+      screen: 'fbook.HomeScene',
+      navigatorStyle: {
+        navBarHidden: true
+      },
+    })
   }
 
   _handleChangeText = (name) => {
@@ -75,19 +81,19 @@ class UserInfo extends Component {
             <View style={styles.infoBox}>
                 <View style={{flex: 1, backgroundColor: '#fff'}}>
                   <ListItem label="Username">
-                    <TextInput style={styles.textInput} value={username} onChangeText={this._handleChangeText('username')} />
+                    <TextInput returnKeyType='done' style={styles.textInput} value={username} onChangeText={this._handleChangeText('username')} />
                   </ListItem>
 
                   <ListItem label="Email">
-                    <TextInput style={styles.textInput} value={email} onChangeText={this._handleChangeText('email')} />
+                    <TextInput returnKeyType='done' keyboardType="email-address" style={styles.textInput} value={email} onChangeText={this._handleChangeText('email')} />
                   </ListItem>
 
                   <ListItem label="Mobile">
-                    <TextInput style={styles.textInput} value={telephone} onChangeText={this._handleChangeText('telephone')} />
+                    <TextInput returnKeyType='done' keyboardType="phone-pad" style={styles.textInput} value={telephone} onChangeText={this._handleChangeText('telephone')} />
                   </ListItem>
 
                   <ListItem label="Address">
-                    <TextInput style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} />
+                    <TextInput returnKeyType='done' style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} />
                   </ListItem>
 
                   {/*<ListItem label="Facebook">*/}

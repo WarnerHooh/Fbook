@@ -30,6 +30,9 @@ class SignIn extends Component {
       screen: 'fbook.HomeScene',
       animated: false,
       title: '',
+      navigatorStyle: {
+        navBarHidden: true
+      }
     });
   }
 
@@ -73,6 +76,7 @@ class SignIn extends Component {
             style={ style.field }
             autoCapitalize={'none'}
             autoCorrect={false}
+            returnKeyType='done'
             onChangeText={ (username) => { this.setState({username}) } }
             value={ this.state.username }
           />
@@ -85,6 +89,7 @@ class SignIn extends Component {
             inputStyle={ style.input }
             autoCapitalize={'none'}
             autoCorrect={false}
+            returnKeyType='done'
             secureTextEntry={true}
             onChangeText={ (password) => { this.setState({password}) } }
             value={ this.state.password }

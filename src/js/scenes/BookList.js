@@ -65,12 +65,13 @@ class BookList extends Component {
   }
 
   render() {
-    const {bookList, dataSource} = this.state
-    if (bookList.length) {
+    const {dataSource} = this.state
+
+    if (bookListStored.length) {
       return (
         <View style={style.container}>
-          <Header title="Owned Books"/>
-          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch}/>
+          <Header title="" />
+          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch} />
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}

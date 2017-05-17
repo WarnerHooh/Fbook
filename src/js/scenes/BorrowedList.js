@@ -9,7 +9,7 @@ import {
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import Header from '../components/Header'
 
 import BookItem from '../components/BookItem'
 import { borrowedBooks } from '../actions/book'
@@ -41,23 +41,14 @@ class BorowedLentList extends Component {
   render() {
     const { dataSource } = this.state
     return (
-      <ScrollableTabView style={[style.container, {paddingTop: 10}]}>
-        <View tabLabel="Borrowed" style={style.container}>
-          <ListView
-            enableEmptySections={true}
-            dataSource={dataSource}
-            renderRow={({id, book, user, startTime, endTime}, sectionID, rowID) => <BookItem key={id} book={book} borrowRecord={{id, user, startTime, endTime}} ifRecord='false' navigator={this.props.navigator} />}
-          />
-        </View>
-
-        <View tabLabel="Lent" style={style.container}>
-          <ListView
-            enableEmptySections={true}
-            dataSource={dataSource}
-            renderRow={(record, sectionID, rowID) => <BookItem key={record.id} book={record.book} navigator={this.props.navigator} />}
-          />
-        </View>
-      </ScrollableTabView>
+      <View tabLabel="Borrowed" style={style.container}>
+        <Header title="Records" />
+        <ListView style={style.listView}
+          enableEmptySections={true}
+          dataSource={dataSource}
+          renderRow={({id, book, user, startTime, endTime}, sectionID, rowID) => <BookItem key={id} book={book} borrowRecord={{id, user, startTime, endTime}} ifRecord='false' navigator={this.props.navigator} />}
+        />
+      </View>
     )
   }
 }
@@ -67,6 +58,9 @@ export default connect(({user}) => ({user}), null)(BorowedLentList)
 const style = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  listView: {
+    marginTop: -30
   },
   noRecordView: {
     alignItems: 'center',

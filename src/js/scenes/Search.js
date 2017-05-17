@@ -43,6 +43,10 @@ export default class extends Component {
     }
   }, 500)
 
+  _onPressSearchButton = () => {
+    this.refs.searchBar.blur();
+  }
+
   componentDidMount() {
     this.refs.searchBar.focus();
   }
@@ -51,7 +55,7 @@ export default class extends Component {
     const { dataSource } = this.state
     return (
       <View style={{flex: 1}}>
-        <SearchBar ref='searchBar' onChangeText={::this._onSearch} autoCapitalize="none" />
+        <SearchBar ref='searchBar' onChangeText={::this._onSearch} autoCapitalize="none" onSearchButtonPress={this._onPressSearchButton} />
         <ListView
           enableEmptySections={true}
           dataSource={dataSource}

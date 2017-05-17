@@ -519,7 +519,7 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 5PYG74R2D5;
+						DevelopmentTeam = WNFQZLC272;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -839,7 +839,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5PYG74R2D5;
+				DEVELOPMENT_TEAM = WNFQZLC272;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -850,14 +850,14 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 				);
 				INFOPLIST_FILE = Fbook/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.myFbook;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Fbook;
 				PRODUCT_NAME = Fbook;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -870,7 +870,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5PYG74R2D5;
+				DEVELOPMENT_TEAM = WNFQZLC272;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -881,14 +881,14 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar",
 				);
 				INFOPLIST_FILE = Fbook/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.myFbook;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Fbook;
 				PRODUCT_NAME = Fbook;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";

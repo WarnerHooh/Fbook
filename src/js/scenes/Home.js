@@ -12,7 +12,7 @@ import * as signInActions from '../actions/signIn'
 import { iconsMap, iconsLoaded } from '../utils/appIcons'
 
 import BookList from './BookList';
-import BorrowedLentList from './BorrowedLentList';
+import BorrowedList from './BorrowedList';
 import UserInfo from './UserInfo'
 
 class Home extends Component {
@@ -162,7 +162,7 @@ class Home extends Component {
               selectedTab: 'record',
             });
           }}>
-          <BorrowedLentList navigator={this.props.navigator}/>
+          <BorrowedList navigator={this.props.navigator}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Owned"

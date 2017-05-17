@@ -11,7 +11,7 @@ import BookInfo from './BookInfo';
 import BookList from './BookList';
 import UserInfo from './UserInfo';
 import Search from './Search';
-import BorrowedLentList from './BorrowedLentList';
+import BorrowedList from './BorrowedList';
 const store = configureStore()
 
 export default () => {
@@ -25,7 +25,7 @@ export default () => {
     'fbook.BookListScene':          BookList,
     'fbook.UserInfoScene':          UserInfo,
     'fbook.SearchScene':            Search,
-    'fbook.BorrowedLentListScene':  BorrowedLentList,
+    'fbook.BorrowedListScene':  BorrowedList,
   };
 
   Object.keys(SCENES).forEach((key) => {

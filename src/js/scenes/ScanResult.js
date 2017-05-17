@@ -43,7 +43,10 @@ class ScanResult extends Component {
     if (event.id === 'goHome') {
       this.props.navigator.resetTo({
         screen: 'fbook.HomeScene',
-        animated: false
+        animated: false,
+        navigatorStyle: {
+          navBarHidden: true
+        },
       });
     }
   }

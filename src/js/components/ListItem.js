@@ -10,6 +10,7 @@ import {
   Dimensions,
   TouchableHighlight,
   Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -19,19 +20,21 @@ export default class ListItem extends Component {
 
     if(onPress) {
       return (
-        <View style={style.extra}>
-          <TouchableHighlight underlayColor="#BBB" onPress={onPress}>
-            <View style={style.container}>
-              <View style={style.labelView}>
-                <Text style={style.labelText}>{ this.props.label }</Text>
+        <KeyboardAvoidingView behavior='height'>
+          <View style={style.extra}>
+            <TouchableHighlight underlayColor="#BBB" onPress={onPress}>
+              <View style={style.container}>
+                <View style={style.labelView}>
+                  <Text style={style.labelText}>{ this.props.label }</Text>
+                </View>
+                { children }
+                <View style={style.arrow}>
+                  <Icon name='angle-right' size={25} color="#ccc" style={style.icon} />
+                </View>
               </View>
-              { children }
-              <View style={style.arrow}>
-                <Icon name='angle-right' size={25} color="#ccc" style={style.icon} />
-              </View>
-            </View>
-          </TouchableHighlight>
-        </View>
+            </TouchableHighlight>
+          </View>
+        </KeyboardAvoidingView>
       )
     }
 
