@@ -33,10 +33,13 @@ export default class BookItem extends Component {
 
   _onPress = () => {
     let {book, bookOwner, borrowRecord, ifRecord} = this.props;
-    console.log('on pressed....')
+
     this.props.navigator.push({
       screen: 'fbook.BookInfoScene',
       title: 'book',
+      navigatorStyle: {
+        tabBarHidden: true
+      },
       passProps: {
         isSaved: true,
         bookData: book,

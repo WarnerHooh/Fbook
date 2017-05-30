@@ -24,7 +24,10 @@ class Home extends Component {
   _navigateToScanner = () => {
     this.props.navigator.push({
       screen: 'fbook.ScannerScene',
-      title: 'Scanning'
+      title: 'Scanning',
+      navigatorStyle: {
+        tabBarHidden: true
+      }
     });
   }
 

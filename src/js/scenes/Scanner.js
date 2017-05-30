@@ -13,6 +13,9 @@ export default class extends Component {
       !flag && this.props.navigator.resetTo({
         screen: 'fbook.ScanResultScene',
         title: 'Book info',
+        navigatorStyle: {
+          tabBarHidden: true
+        },
         passProps: {
           isbn: isbn
         }
@@ -26,6 +29,9 @@ export default class extends Component {
     this.props.navigator.resetTo({
       screen: 'fbook.ScanResultScene',
       title: 'Book info',
+      navigatorStyle: {
+        tabBarHidden: true
+      },
       passProps: {
         isbn: '9787506365413'
       }
