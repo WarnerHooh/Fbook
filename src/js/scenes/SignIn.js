@@ -18,18 +18,20 @@ class SignIn extends Component {
       password: '',
     }
 
-    this.handleResetNavigation(props)
+    this._handleResetNavigation(props)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.handleResetNavigation(nextProps)
+    this._handleResetNavigation(nextProps)
   }
 
-  handleResetNavigation({ token, navigator }) {
-    token && navigator.pop({
-      animated: false,
-    });
-    token && navigator.switchToTab({tabIndex: 0})
+  _handleResetNavigation({ token, navigator }) {
+    if(token) {
+      navigator.pop({
+        animated: false,
+      });
+      navigator.switchToTab({tabIndex: 0})
+    }
   }
 
   handleSignIn() {
@@ -52,7 +54,8 @@ class SignIn extends Component {
       title: 'Sign Up',
       backButtonTitle: 'back',
       navigatorStyle: {
-        navBarHidden: true
+        navBarHidden: true,
+        screenBackgroundColor: '#333'
       },
     })
   }

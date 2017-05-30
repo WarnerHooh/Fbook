@@ -32,18 +32,25 @@ class BookList extends Component {
 
   _onNavigatorEvent = (event) => {
     if (event && event.id === 'bottomTabSelected') {
-
       const userId = this.props.user.id
 
-      userId && getMyBooks(userId).then((bookList) => {
-        bookListStored = bookList
-        this.setState({
-          bookList,
-          dataSource: ds.cloneWithRows(bookList)
+      if(userId) {
+        getMyBooks(userId).then((bookList) => {
+          bookListStored = bookList
+          this.setState({
+            bookList,
+            dataSource: ds.cloneWithRows(bookList)
+          })
+        }).catch((e) => {
+          Alert.alert('Error', `${e}`)
         })
-      }).catch((e) => {
-        Alert.alert('Error', `${e}`)
-      })
+      } else {
+        bookListStored = [];
+        this.setState({
+          bookList: [],
+          dataSource: ds.cloneWithRows([])
+        })
+      }
     }
   }
 

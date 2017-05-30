@@ -32,14 +32,19 @@ class BorowedLentList extends Component {
 
       const userId = this.props.user.id
 
-      userId && borrowedBooks({userId}).then((recordList) => {
-        console.log(recordList)
-        this.setState({
-          dataSource: ds.cloneWithRows(recordList)
+      if(userId) {
+        borrowedBooks({userId}).then((recordList) => {
+          this.setState({
+            dataSource: ds.cloneWithRows(recordList)
+          })
+        }).catch((e) => {
+          Alert.alert('Error', `${e}`)
         })
-      }).catch((e) => {
-        Alert.alert('Error', `${e}`)
-      })
+      } else {
+        this.setState({
+          dataSource: ds.cloneWithRows([])
+        })
+      }
     }
   }
 

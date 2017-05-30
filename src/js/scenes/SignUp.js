@@ -22,7 +22,7 @@ class SignUp extends Component {
     }
   }
 
-  handleSignUp() {
+  _handleSignUp = () => {
     let { username, email, password, passwordConfirm } = this.state;
     let errorMessage;
 
@@ -40,7 +40,7 @@ class SignUp extends Component {
     this.setState({ errorMessage });
   }
 
-  handleSignIn() {
+  _handleSignIn = () => {
     this.props.navigator.pop();
   }
 
@@ -105,12 +105,12 @@ class SignUp extends Component {
             </View>
 
             <View style={ style.button }>
-              <Button onButtonPress={ ::this.handleSignUp }>Sign Up</Button>
+              <Button onButtonPress={ this._handleSignUp }>Sign Up</Button>
             </View>
 
             <View style={ style.signIn }>
               <Text style={ colorStyle.grey }>
-                Already have an account?  <Text style={ style.toSignUp }  onPress={ ::this.handleSignIn }>Sign In</Text>
+                Already have an account?  <Text style={ style.toSignUp }  onPress={ this._handleSignIn }>Sign In</Text>
               </Text>
             </View>
           </View>

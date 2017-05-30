@@ -9,10 +9,10 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.17.1",
-    "react": "15.4.1",
-    "react-native": "^0.39.0",
+    "react": "16.0.0-alpha.6",
+    "react-native": "^0.44.2",
     "react-native-button": "^1.7.1",
-    "react-native-camera": "^0.4.1",
+    "react-native-camera": "^0.6.0",
     "react-native-navigation": "^1.1.81",
     "react-native-scrollable-tab-view": "^0.7.2",
     "react-native-search-bar": "^3.0.0",
