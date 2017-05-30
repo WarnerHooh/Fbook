@@ -23,18 +23,24 @@ class BorowedLentList extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
+
+    this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
   }
 
-  componentWillMount() {
-    const { id } = this.props.user
-    borrowedBooks({userId: id}).then((recordList) => {
-      console.log(recordList)
-      this.setState({
-        dataSource: ds.cloneWithRows(recordList)
+  _onNavigatorEvent = (event) => {
+    if (event && event.id === 'bottomTabSelected') {
+
+      const userId = this.props.user.id
+
+      userId && borrowedBooks({userId}).then((recordList) => {
+        console.log(recordList)
+        this.setState({
+          dataSource: ds.cloneWithRows(recordList)
+        })
+      }).catch((e) => {
+        Alert.alert('Error', `${e}`)
       })
-    }).catch((e) => {
-      Alert.alert('Error', `${e}`)
-    })
+    }
   }
 
 
@@ -42,7 +48,6 @@ class BorowedLentList extends Component {
     const { dataSource } = this.state
     return (
       <View tabLabel="Borrowed" style={style.container}>
-        <Header title="Records" />
         <ListView style={style.listView}
           enableEmptySections={true}
           dataSource={dataSource}
@@ -58,6 +63,7 @@ export default connect(({user}) => ({user}), null)(BorowedLentList)
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 30
   },
   listView: {
     marginTop: -30

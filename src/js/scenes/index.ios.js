@@ -25,7 +25,7 @@ export default () => {
     'fbook.BookListScene':          BookList,
     'fbook.UserInfoScene':          UserInfo,
     'fbook.SearchScene':            Search,
-    'fbook.BorrowedListScene':  BorrowedList,
+    'fbook.BorrowedListScene':      BorrowedList,
   };
 
   Object.keys(SCENES).forEach((key) => {

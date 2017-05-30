@@ -26,14 +26,10 @@ class SignIn extends Component {
   }
 
   handleResetNavigation({ token, navigator }) {
-    token && navigator.resetTo({
-      screen: 'fbook.HomeScene',
+    token && navigator.pop({
       animated: false,
-      title: '',
-      navigatorStyle: {
-        navBarHidden: true
-      }
     });
+    token && navigator.switchToTab({tabIndex: 0})
   }
 
   handleSignIn() {

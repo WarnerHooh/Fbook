@@ -27,33 +27,54 @@ class UserInfo extends Component {
   constructor(props) {
     super(props);
 
-    let {username, telephone, email, address} = props.user;
+    let {username, telephone, email, address} = this.props.user;
+
     this.state = {
       username, telephone, email, address
     };
+
+    this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
   }
 
-  _getDataFromApi = (isbn)=> {
-    fetch('https://api.douban.com/v2/book/isbn/' + isbn)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({bookData: {
-        }})
-        return responseJson;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  componentWillReceiveProps({user}) {
+    const {username, telephone, email, address} = user
+    const {_username, _telephone, _email, _address} = this.state
+
+    this.setState({
+      username: _username || username,
+      telephone: _telephone || telephone,
+      email: _email || email,
+      address: _address || address
+    })
+  }
+
+  _onNavigatorEvent = (event) => {
+    if (event.id === 'bottomTabSelected') {
+      const { user } = this.props
+
+      if(user.token) {
+        this.setState({ user })
+      } else {
+        this.props.navigator.push({
+          screen: "fbook.SignInScene",
+          navigatorStyle: {
+            navBarHidden: true,
+            tabBarHidden: true
+          },
+          passProps: {},
+          navigatorButtons: {},
+          animationType: 'none'
+        });
+      }
+    }
   }
 
   _handleSignOut = () => {
-    this.props.signOut();
-    // this.props.navigator.pop();
-    this.props.navigator.resetTo({
-      screen: 'fbook.HomeScene',
-      navigatorStyle: {
-        navBarHidden: true
-      },
+    const { navigator, signOut } = this.props
+
+    signOut();
+    navigator.switchToTab({
+      tabIndex: 0
     })
   }
 
@@ -65,11 +86,9 @@ class UserInfo extends Component {
     }
   }
 
-  componentWillMount() {
-  }
-
   render() {
     let {username, telephone, email, address} = this.state;
+
     return (
       <ScrollView>
         <Image source={require('../../image/user-bg.png')} style={imageStyle.backgroundImage}>
@@ -79,7 +98,7 @@ class UserInfo extends Component {
             </View>
 
             <View style={styles.infoBox}>
-                <View style={{flex: 1, backgroundColor: '#fff'}}>
+                <View style={{flexGrow: 1, backgroundColor: '#fff'}}>
                   <ListItem label="Username">
                     <TextInput returnKeyType='done' style={styles.textInput} value={username} onChangeText={this._handleChangeText('username')} />
                   </ListItem>
@@ -108,7 +127,7 @@ class UserInfo extends Component {
                 </View>
 
                 <View style={{flex: 1, borderTopWidth: 1, borderColor: '#eee', marginTop: 20}}>
-                  <ListItem label="Sign Out" onPress={::this._handleSignOut} />
+                  <ListItem label="Sign Out" onPress={this._handleSignOut} />
                 </View>
 
               </View>
@@ -122,31 +141,32 @@ class UserInfo extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 300
   },
   avatarBox: {
+    top: -200,
     width: 80,
     height: 80,
     borderRadius: 40,
     backgroundColor: '#000',
     alignSelf: 'center',
-    marginTop: 100,
     shadowOffset: {
       width: 0,
       height: 0
     },
     shadowColor: '#fff',
     shadowRadius: 4,
-    shadowOpacity: 0.5
-  },
-  infoBox: {
-    marginTop: 50,
-    backgroundColor: '#EFEFEF'
+    shadowOpacity: 0.5,
   },
   avatar: {
     width: 80,
     height: 80,
     overflow: 'hidden',
     borderRadius: 40
+  },
+  infoBox: {
+    backgroundColor: '#EFEFEF',
+    top: -130,
   },
   textInput: {
     flex: 1,

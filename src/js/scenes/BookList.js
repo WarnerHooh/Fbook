@@ -26,19 +26,25 @@ class BookList extends Component {
       bookList: [],
       dataSource: ds.cloneWithRows([])
     };
+
+    this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
   }
 
-  componentWillMount() {
-    getMyBooks(this.props.user.id).then((bookList) => {
-      bookListStored = bookList
-      this.setState({
-        bookList,
-        dataSource: ds.cloneWithRows(bookList)
+  _onNavigatorEvent = (event) => {
+    if (event && event.id === 'bottomTabSelected') {
+
+      const userId = this.props.user.id
+
+      userId && getMyBooks(userId).then((bookList) => {
+        bookListStored = bookList
+        this.setState({
+          bookList,
+          dataSource: ds.cloneWithRows(bookList)
+        })
+      }).catch((e) => {
+        Alert.alert('Error', `${e}`)
       })
-    }).catch((e) => {
-      Alert.alert('Error', `${e}`)
-      // this.props.navigator.pop();
-    })
+    }
   }
 
   _onDelete = (index) => (id) => {
@@ -70,13 +76,12 @@ class BookList extends Component {
     if (bookListStored.length) {
       return (
         <View style={style.container}>
-          <Header title="" />
-          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={::this._onSearch} />
+          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={this._onSearch} />
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}
             renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator}
-                                                             onDelete={::this._onDelete(rowID)}/>}
+                                                             onDelete={this._onDelete(rowID)}/>}
           />
         </View>
       )
@@ -95,7 +100,8 @@ export default connect(({user}) => ({user}), null)(BookList)
 const style = StyleSheet.create({
   container: {
     flexGrow: 1,
-    bottom:50,
+    bottom: 50,
+    marginTop: 50
   },
   noRecordView: {
     alignItems: 'center',
