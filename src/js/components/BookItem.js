@@ -32,20 +32,18 @@ export default class BookItem extends Component {
   }
 
   _onPress = () => {
-    let {book, bookOwner, borrowRecord, ifRecord} = this.props;
+    let {book, bookOwner, bookRecord, navigator} = this.props;
 
-    this.props.navigator.push({
+    navigator.push({
       screen: 'fbook.BookInfoScene',
-      title: 'book',
+      title: 'Book Info',
       navigatorStyle: {
         tabBarHidden: true
       },
       passProps: {
-        isSaved: true,
         bookData: book,
         bookOwner,
-        borrowRecord,
-        ifRecord,
+        bookRecord,
       }
     })
   }
@@ -71,9 +69,9 @@ export default class BookItem extends Component {
   }
 
   render() {
-    let {id, bookName, imageUrl, status} = this.props.book;
-    let {onDelete} = this.props;
-    let {likes, comments} = this.state;
+    const {onDelete, status, book} = this.props;
+    const {id, bookName, imageUrl} = book;
+    const {likes, comments} = this.state;
 
     let swipeoutBtns = (!status && onDelete) ? [
       {
@@ -103,14 +101,14 @@ export default class BookItem extends Component {
         opacity: animationOpacity
       }}>
         <Swipeout right={swipeoutBtns}>
-          <TouchableWithoutFeedback onPress={::this._onPress}>
+          <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={[styles.bookItem]}>
               <Image style={styles.bookPicture} source={ imageUrl ? {uri: imageUrl} : reactLogo } />
               <View style={styles.bookDetails}>
                 <Text style={styles.bookTitle}>{ bookName }</Text>
 
                 <Text>
-                  <Text style={styles.bookLike} onPress={::this._onToggleLike}>
+                  <Text style={styles.bookLike} onPress={this._onToggleLike}>
                     {
                       likes.status ? <FontAwesomeIcon name='heart' color='#FF4A6A' size={15} /> : <FontAwesomeIcon name='heart-o' color='#a2a1b8' size={15} />
                     }

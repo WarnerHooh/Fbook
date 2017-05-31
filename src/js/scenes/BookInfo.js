@@ -21,16 +21,16 @@ class BookInfo extends Component {
 
   constructor(props) {
     super(props);
-    const {userId, bookData: {status, user_id}, borrowRecord,ifRecord} = props
+    const {userId, bookData: {status, user_id}, bookRecord} = props
 
     let canReturn = false;
-    if (borrowRecord) {
-      if (status && userId == borrowRecord.user.id) {
+    if (bookRecord) {
+      if (status && userId === bookRecord.user.id) {
         canReturn = true;
       }
     }
     this.state = {
-      showBorrow: !status && userId != user_id && !ifRecord,
+      showBorrow: !status && userId !== user_id,
       showReturn: canReturn,
     };
 
@@ -53,8 +53,9 @@ class BookInfo extends Component {
   // }
 
   _returnBook = ()=> {
-    const {borrowRecord, bookData} = this.props;
-    const {id, user}=borrowRecord;
+    const {bookRecord, bookData} = this.props;
+
+    const {id, user} = bookRecord;
 
     returnBook({id, userId: user.id, bookId: bookData.id}).then(()=> {
       Alert.alert(`Book 『${bookData.bookName}』 returned`);
@@ -81,14 +82,22 @@ class BookInfo extends Component {
     })
   }
 
+  _fetchBookRecord = () => {
+
+  }
+
+  _fetchBookOwner = () => {
+
+  }
+
   render() {
-    let {token, bookData, bookOwner, borrowRecord} = this.props;
-    console.log(`borrowRecord:${borrowRecord}`)
+    let {token, bookData, bookOwner, bookRecord} = this.props;
+    console.log(`bookRecord:${bookRecord}`)
     let {showBorrow, showReturn} = this.state;
 
     return (
       <View style={styles.container}>
-        <BookDetail bookData={bookData} bookOwner={bookOwner} borrowRecord={borrowRecord}/>
+        <BookDetail bookData={bookData} bookOwner={bookOwner} bookRecord={bookRecord}/>
 
         { showBorrow ? <View style={styles.actionButtonView}>
           <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="借"

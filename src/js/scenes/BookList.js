@@ -77,17 +77,21 @@ class BookList extends Component {
     })
   }
 
+  _onPressSearchButton = () => {
+    this.refs.searchBar.blur();
+  }
+
   render() {
     const {dataSource} = this.state
 
     if (bookListStored.length) {
       return (
         <View style={style.container}>
-          <SearchBar placeholder={"Search"} autoCapitalize={'none'} onChangeText={this._onSearch} />
+          <SearchBar placeholder={"Search"} ref="searchBar" autoCapitalize={'none'} onChangeText={this._onSearch} onSearchButtonPress={this._onPressSearchButton} />
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}
-            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} navigator={this.props.navigator}
+            renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} status={book.status} navigator={this.props.navigator}
                                                              onDelete={this._onDelete(rowID)}/>}
           />
         </View>

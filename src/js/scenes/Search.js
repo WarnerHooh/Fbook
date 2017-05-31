@@ -55,11 +55,11 @@ export default class extends Component {
     const { dataSource } = this.state
     return (
       <View style={{flex: 1}}>
-        <SearchBar ref='searchBar' onChangeText={::this._onSearch} autoCapitalize="none" onSearchButtonPress={this._onPressSearchButton} />
+        <SearchBar ref='searchBar' onChangeText={this._onSearch} autoCapitalize="none" onSearchButtonPress={this._onPressSearchButton} />
         <ListView
           enableEmptySections={true}
           dataSource={dataSource}
-          renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} bookOwner={book.user} navigator={this.props.navigator} />}
+          renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} status={book.status} bookOwner={book.user} navigator={this.props.navigator} />}
         />
       </View>
     )

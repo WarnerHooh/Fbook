@@ -24,13 +24,20 @@ const BookOwner = ({owner}) => {
   return null;
 }
 
-const BookBorrower = ({user, startTime}) => {
+const BookBorrower = ({bookOwner = {}, bookRecord = {}}) => {
+
+  const {user, startTime, endTime} = bookRecord
+
+  const {userId} = bookOwner
+
   if(user) {
     return (
       <Text style={{paddingHorizontal: 10, marginBottom: 16}}>
         <Text style={{color: '#f00'}}>{user.username}</Text>
-        <Text> borrowed this book at </Text>
+        <Text> borrowed this book </Text>
+        { endTime ? <Text>from </Text> : <Text>at </Text>}
         <Text style={{color: '#f00'}}>{moment(startTime).format('YYYY-MM-DD hh:mm:ss')}</Text>
+        { endTime ? (<Text> to <Text style={{color: '#f00'}}>{moment(endTime).format('YYYY-MM-DD hh:mm:ss')}</Text></Text>) : null}
       </Text>
     )
   }
@@ -38,7 +45,7 @@ const BookBorrower = ({user, startTime}) => {
   return null;
 }
 
-export default ({bookData, bookOwner, borrowRecord}) => {
+export default ({bookData, bookOwner, bookRecord}) => {
   return (
     <ScrollView>
       <View style={{backgroundColor: "darkred", flexDirection: 'row'}}>
@@ -50,7 +57,7 @@ export default ({bookData, bookOwner, borrowRecord}) => {
         </View>
       </View>
       <View style={styles.textBox}>
-        <BookBorrower {...borrowRecord} />
+        <BookBorrower bookOwner={bookOwner} bookRecord={bookRecord} />
 
         <Text style={styles.title}>{bookData.bookName}</Text>
         <Text style={styles.author}>{bookData.author}</Text>
@@ -78,6 +85,7 @@ const styles = StyleSheet.create({
   },
   description: {
     padding: 10,
+    lineHeight: 20,
     color: 'gray',
   },
   actionButton: {
