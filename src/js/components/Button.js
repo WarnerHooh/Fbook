@@ -13,7 +13,7 @@ export default class extends Component {
         activeOpacity={0.7}
         containerStyle={ style.container }
         style={ style.button }
-        onPress={ ::this._onPress }
+        onPress={ this._onPress }
       >
         { this.props.children }
       </Button>

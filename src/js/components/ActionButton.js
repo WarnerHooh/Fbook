@@ -1,5 +1,6 @@
+
 import React, { Component } from 'react'
-import { View, Text, StyleSheet,  } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 export default class ActionButton extends Component{
   constructor(props) {
@@ -14,7 +15,7 @@ export default class ActionButton extends Component{
     return (
       <View style={[style.container, style.shadow, this.props.style]}>
         <Text style={style.text}>{this.props.text}</Text>
-        <Text style={style.filling} onPress={::this._onPress} />
+        <Text style={style.filling} onPress={this._onPress} />
       </View>
     )
   }

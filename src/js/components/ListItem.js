@@ -50,12 +50,6 @@ export default class ListItem extends Component {
 }
 
 const style = StyleSheet.create({
-  extra: {
-    flex: 1,
-    borderTopWidth: 1,
-    borderColor: '#eee',
-    marginTop: -1,
-  },
   container: {
     paddingVertical: 6,
     paddingHorizontal: 20,
@@ -63,6 +57,12 @@ const style = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#eee',
     backgroundColor:'#fff'
+  },
+  extra: {
+    flex: 1,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    marginTop: -1,
   },
   labelView: {
     width: 120

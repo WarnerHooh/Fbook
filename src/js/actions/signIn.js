@@ -1,5 +1,5 @@
 import { switchLoader } from './loader'
-import { updateUser } from './user'
+import { setUser } from './user'
 import { purge } from '../store'
 import { POST } from '../utils/ifetch'
 
@@ -10,7 +10,7 @@ export const toSignIn = ({username, password}) => async (dispatch) => {
   try {
     dispatch(switchLoader(true))
     let user = await POST('/user/session', { username, password })
-    dispatch(updateUser(user))
+    dispatch(setUser(user))
   } catch (e) {
     dispatch(signInWithError(e))
   } finally {
@@ -25,6 +25,6 @@ const signInWithError = (error) => ({
 
 export const toSignOut = () => (dispatch)=> {
   purge()
-  dispatch(updateUser({}))
+  dispatch(setUser({}))
   dispatch(signInWithError())
 }

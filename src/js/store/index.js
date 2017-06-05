@@ -4,13 +4,13 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import thunk from 'redux-thunk'
 
 import reducers from '../reducers'
-import { updateUser } from '../actions/user'
+import { setUser } from '../actions/user'
 
 let persistor, store;
 
 export function purge () {
   persistor && persistor.purge()
-  store.dispatch(updateUser({}))
+  store.dispatch(setUser({}))
 }
 
 export function getState(key) {
