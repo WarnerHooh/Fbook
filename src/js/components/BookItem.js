@@ -100,7 +100,7 @@ export default class BookItem extends Component {
         height: animationHeight,
         opacity: animationOpacity
       }}>
-        <Swipeout right={swipeoutBtns}>
+        <Swipeout right={swipeoutBtns} autoClose={true}>
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={[styles.bookItem]}>
               <Image style={styles.bookPicture} source={ imageUrl ? {uri: imageUrl} : reactLogo } />

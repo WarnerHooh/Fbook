@@ -4,6 +4,7 @@ import {
   ListView,
   View,
   Text,
+  RefreshControl,
   Alert
 } from 'react-native';
 
@@ -21,33 +22,41 @@ class BorowedLentList extends Component {
     super(props);
 
     this.state = {
+      refreshing: false,
       dataSource: ds.cloneWithRows([])
     };
 
-    this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
+    this._fetchData(props.user.id)
   }
 
-  _onNavigatorEvent = (event) => {
-    if (event && event.id === 'bottomTabSelected') {
+  _fetchData = (userId) => {
+    userId && borrowedBooks({userId, limit: 100}).then((recordList) => {
+      this.setState({
+        dataSource: ds.cloneWithRows(recordList)
+      })
+    }).catch((e) => {
+      Alert.alert('Error', `${e}`)
+    }).finally(() => {
+      this.setState({refreshing: false});
+    })
+  }
 
-      const userId = this.props.user.id
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this._fetchData(this.props.user.id)
+  }
 
-      if(userId) {
-        borrowedBooks({userId}).then((recordList) => {
-          this.setState({
-            dataSource: ds.cloneWithRows(recordList)
-          })
-        }).catch((e) => {
-          Alert.alert('Error', `${e}`)
-        })
-      } else {
-        this.setState({
-          dataSource: ds.cloneWithRows([])
-        })
-      }
+  componentWillReceiveProps(nextProps) {
+    const userId = nextProps.user.id
+
+    if(this.props.user.id !== userId) {
+      this._fetchData(userId)
+    } else {
+      this.setState({
+        dataSource: ds.cloneWithRows([])
+      })
     }
   }
-
 
   render() {
     const { dataSource } = this.state
@@ -56,6 +65,12 @@ class BorowedLentList extends Component {
         <ListView style={style.listView}
           enableEmptySections={true}
           dataSource={dataSource}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
           renderRow={({id, book, status, ...rest}, sectionID, rowID) => <BookItem key={id} status={status} book={book} bookRecord={{id, ...rest}} navigator={this.props.navigator} />}
         />
       </View>

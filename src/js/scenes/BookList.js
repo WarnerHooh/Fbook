@@ -4,6 +4,7 @@ import {
   ListView,
   View,
   Text,
+  RefreshControl,
   Alert
 } from 'react-native';
 import SearchBar from 'react-native-search-bar';
@@ -23,35 +24,47 @@ class BookList extends Component {
     super(props);
 
     this.state = {
+      refreshing: false,
       bookList: [],
       dataSource: ds.cloneWithRows([])
     };
 
-    this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
+    this._fetchData(props.user.id)
+    // this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent);
   }
 
-  _onNavigatorEvent = (event) => {
-    if (event && event.id === 'bottomTabSelected') {
-      const userId = this.props.user.id
+  componentWillReceiveProps(nextProps) {
 
-      if(userId) {
-        getMyBooks(userId).then((bookList) => {
-          bookListStored = bookList
-          this.setState({
-            bookList,
-            dataSource: ds.cloneWithRows(bookList)
-          })
-        }).catch((e) => {
-          Alert.alert('Error', `${e}`)
-        })
-      } else {
-        bookListStored = [];
-        this.setState({
-          bookList: [],
-          dataSource: ds.cloneWithRows([])
-        })
-      }
+    const userId = nextProps.user.id
+
+    if(this.props.user.id !== userId) {
+      this._fetchData(userId)
+    } else {
+      bookListStored = [];
+      this.setState({
+        bookList: [],
+        dataSource: ds.cloneWithRows([])
+      })
     }
+  }
+
+  _fetchData = (userId) => {
+    userId && getMyBooks(userId, {limit: 100}).then((bookList) => {
+      bookListStored = bookList
+      this.setState({
+        bookList,
+        dataSource: ds.cloneWithRows(bookList)
+      })
+    }).catch((e) => {
+      Alert.alert('Error', `${e}`)
+    }).finally(() => {
+      this.setState({refreshing: false});
+    })
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this._fetchData(this.props.user.id)
   }
 
   _onDelete = (index) => (id) => {
@@ -75,6 +88,10 @@ class BookList extends Component {
       bookList,
       dataSource: ds.cloneWithRows(bookList)
     })
+
+    if(text.length === 0) {
+      this.refs.searchBar.blur();
+    }
   }
 
   _onPressSearchButton = () => {
@@ -91,6 +108,12 @@ class BookList extends Component {
           <ListView
             enableEmptySections={true}
             dataSource={dataSource}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
             renderRow={(book, sectionID, rowID) => <BookItem key={book.id} book={book} status={book.status} navigator={this.props.navigator}
                                                              onDelete={this._onDelete(rowID)}/>}
           />

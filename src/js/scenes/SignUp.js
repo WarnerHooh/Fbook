@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, TouchableHighlight, Text, TextInput, Image, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Hoshi } from 'react-native-textinput-effects';
+import { Hoshi, Jiro } from 'react-native-textinput-effects';
 
 import imageStyle from '../../style/image'
 import colorStyle from '../../style/color'
@@ -50,9 +50,9 @@ class SignUp extends Component {
           <View style={ style.container }>
             <Text style={ style.title }>Sign Up</Text>
 
-            <Hoshi
+            <Jiro
               label={'Username'}
-              borderColor={'#ec2e40'}
+              borderColor={'#fff'}
               labelStyle={ [style.label, colorStyle.grey] }
               inputStyle={ style.input }
               style={ style.field }
@@ -62,9 +62,9 @@ class SignUp extends Component {
               value={ this.state.username }
             />
 
-            <Hoshi
+            <Jiro
               label={'Email Address'}
-              borderColor={'#ec2e40'}
+              borderColor={'#fff'}
               labelStyle={ [style.label, colorStyle.grey] }
               inputStyle={ style.input }
               style={ style.field }
@@ -74,9 +74,9 @@ class SignUp extends Component {
               value={ this.state.email }
             />
 
-            <Hoshi
+            <Jiro
               label={'Password'}
-              borderColor={'#ec2e40'}
+              borderColor={'#fff'}
               style={ style.field }
               labelStyle={ [style.label, colorStyle.grey] }
               inputStyle={ style.input }
@@ -87,9 +87,9 @@ class SignUp extends Component {
               value={ this.state.password }
             />
 
-            <Hoshi
+            <Jiro
               label={'Confirm Password'}
-              borderColor={'#ec2e40'}
+              borderColor={'#fff'}
               style={ style.field }
               labelStyle={ [style.label, colorStyle.grey] }
               inputStyle={ style.input }
@@ -143,14 +143,15 @@ const style = StyleSheet.create({
   },
   input: {
     fontWeight: 'normal',
-    color: '#fff'
+    color: '#000'
   },
   label: {
     backgroundColor: 'transparent',
     fontWeight: 'bold',
     margin: 0,
     padding: 0,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 16
   },
   button: {
     marginTop: 60

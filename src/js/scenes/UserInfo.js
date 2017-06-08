@@ -22,6 +22,8 @@ import imageStyle from '../../style/image'
 import colorStyle from '../../style/color'
 import ListItem from '../components/ListItem'
 
+import { updateUser, setUser } from '../actions/user'
+
 class UserInfo extends Component {
 
   constructor(props) {
@@ -37,14 +39,14 @@ class UserInfo extends Component {
   }
 
   componentWillReceiveProps({user}) {
+    console.log(user)
     const {username, telephone, email, address} = user
-    const {_username, _telephone, _email, _address} = this.state
 
     this.setState({
-      username: _username || username,
-      telephone: _telephone || telephone,
-      email: _email || email,
-      address: _address || address
+      username: this.state['username'] || username,
+      telephone: this.state['telephone'] || telephone,
+      email: this.state['email'] || email,
+      address: this.state['address'] || address
     })
   }
 
@@ -71,10 +73,11 @@ class UserInfo extends Component {
 
   _handleSignOut = () => {
     const { navigator, signOut } = this.props
-
-    signOut();
-    navigator.switchToTab({
-      tabIndex: 0
+    this.setState({ username: '', telephone: '', email: '', address: '' }, () => {
+      signOut();
+      navigator.switchToTab({
+        tabIndex: 0
+      })
     })
   }
 
@@ -82,6 +85,24 @@ class UserInfo extends Component {
     return (text) => {
       this.setState({
         [name]: text
+      })
+    }
+  }
+
+  _handleUpdate = (name) => () => {
+    const { user } = this.props
+
+    if(this.state[name] !== user[name]) {
+      updateUser({
+        id: user.id,
+        [name]: this.state[name]
+      }).then(() => {
+        setUser({
+          ...user,
+          [name]: this.state[name]
+        })
+      }).catch((e) => {
+        Alert.alert('Error', `${e}`)
       })
     }
   }
@@ -99,20 +120,20 @@ class UserInfo extends Component {
 
             <View style={styles.infoBox}>
                 <View style={{flexGrow: 1, backgroundColor: '#fff'}}>
-                  <ListItem label="Username">
-                    <TextInput returnKeyType='done' style={styles.textInput} value={username} onChangeText={this._handleChangeText('username')} />
+                    <ListItem label="Username">
+                    <Text style={[styles.textInput, styles.disabled]}>{ username }</Text>
                   </ListItem>
 
                   <ListItem label="Email">
-                    <TextInput returnKeyType='done' keyboardType="email-address" style={styles.textInput} value={email} onChangeText={this._handleChangeText('email')} />
+                    <TextInput returnKeyType='done' keyboardType="email-address" style={styles.textInput} value={email} onChangeText={this._handleChangeText('email')} onBlur={ this._handleUpdate('email') } />
                   </ListItem>
 
                   <ListItem label="Mobile">
-                    <TextInput returnKeyType='done' keyboardType="phone-pad" style={styles.textInput} value={telephone} onChangeText={this._handleChangeText('telephone')} />
+                    <TextInput returnKeyType='done' keyboardType="phone-pad" style={styles.textInput} value={telephone} onChangeText={this._handleChangeText('telephone')} onBlur={ this._handleUpdate('telephone') } />
                   </ListItem>
 
                   <ListItem label="Address">
-                    <TextInput returnKeyType='done' style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} />
+                    <TextInput returnKeyType='done' style={styles.textInput} value={address} onChangeText={this._handleChangeText('address')} onBlur={ this._handleUpdate('address') } />
                   </ListItem>
 
                   {/*<ListItem label="Facebook">*/}
@@ -171,12 +192,16 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     height: 40,
+    lineHeight: 40,
     fontSize: 16,
     textAlign: 'right'
   },
   switcher: {
     marginTop: 4,
     transform: [{scale: 0.8}]
+  },
+  disabled: {
+    color: '#777'
   }
 });
 
@@ -185,7 +210,8 @@ const mapStateToProps = ({user}) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  signOut: bindActionCreators(toSignOut, dispatch)
+  signOut: bindActionCreators(toSignOut, dispatch),
+  setUser: bindActionCreators(setUser, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo)

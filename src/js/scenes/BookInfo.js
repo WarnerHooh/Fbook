@@ -16,22 +16,26 @@ import ActionButton from '../components/ActionButton'
 import BookDetail from '../components/BookDetail'
 import onloadingPic from '../../image/onloading.jpg'
 import { addBook, borrowBook, returnBook } from '../actions/book'
+import { getUser } from '../actions/user'
 
 class BookInfo extends Component {
 
   constructor(props) {
     super(props);
-    const {userId, bookData: {status, user_id}, bookRecord} = props
+
+    const { user, bookData: { status, user_id }, bookRecord } = props
 
     let canReturn = false;
     if (bookRecord) {
-      if (status && userId === bookRecord.user.id) {
+      if (status && user.id === bookRecord.user.id) {
         canReturn = true;
       }
     }
+
     this.state = {
-      showBorrow: !status && userId !== user_id,
+      showBorrow: !status && user.id !== user_id,
       showReturn: canReturn,
+      bookOwner: props.bookOwner
     };
 
     // this.props.navigator.setOnNavigatorEvent(::this.onNavigatorEvent);
@@ -52,14 +56,19 @@ class BookInfo extends Component {
   //   }
   // }
 
-  _returnBook = ()=> {
-    const {bookRecord, bookData} = this.props;
+  componentWillMount() {
+    this._fetchBookOwner()
+  }
 
-    const {id, user} = bookRecord;
+  _returnBook = ()=> {
+    const {bookRecord, bookData, user} = this.props;
+
+    const { id } = bookRecord;
 
     returnBook({id, userId: user.id, bookId: bookData.id}).then(()=> {
       Alert.alert(`Book 『${bookData.bookName}』 returned`);
       this.setState({
+        showReturn: false,
         showBorrow: true,
       })
     }).catch((e)=> {
@@ -68,10 +77,10 @@ class BookInfo extends Component {
   }
 
   _markAsBorrowed = () => {
-    const {userId, bookData} = this.props;
+    const {user, bookData} = this.props;
     const {id, bookName} = bookData;
 
-    borrowBook({bookId: id, userId}).then(() => {
+    borrowBook({bookId: id, userId: user.id}).then(() => {
       Alert.alert(`Book 『${bookName}』 borrowed`);
       this.setState({
         showBorrow: false,
@@ -87,13 +96,27 @@ class BookInfo extends Component {
   }
 
   _fetchBookOwner = () => {
+    const { bookData, bookOwner, user } = this.props
 
+    if(bookOwner === undefined && bookData.userId) {
+      if(bookData.userId === user.id) {
+        this.setState({
+          bookOwner: user
+        })
+      } else {
+        getUser(bookData.userId).then((user) => {
+          this.setState({
+            bookOwner: user
+          })
+        })
+      }
+    }
   }
 
   render() {
-    let {token, bookData, bookOwner, bookRecord} = this.props;
-    console.log(`bookRecord:${bookRecord}`)
-    let {showBorrow, showReturn} = this.state;
+    const {token, bookData, bookRecord} = this.props;
+
+    const {showBorrow, showReturn, bookOwner} = this.state;
 
     return (
       <View style={styles.container}>
@@ -101,12 +124,12 @@ class BookInfo extends Component {
 
         { showBorrow ? <View style={styles.actionButtonView}>
           <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="借"
-                        onAction={::this._markAsBorrowed}/>
+                        onAction={this._markAsBorrowed}/>
         </View> : null }
 
         { showReturn ? <View style={styles.actionButtonView}>
           <ActionButton style={[styles.actionButton, {backgroundColor: token ? '#2E9968' : '#ccc'}]} text="还"
-                        onAction={::this._returnBook}/>
+                        onAction={this._returnBook}/>
         </View> : null }
       </View>
     );
@@ -131,7 +154,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({user}) => ({
   token: user.token,
-  userId: user.id
+  user: user,
 })
 
 const mapDispatchToProps = (dispatch) => ({

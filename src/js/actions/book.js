@@ -1,7 +1,7 @@
 import { GET, POST, DELETE, PUT } from '../utils/ifetch'
 
-export const getMyBooks = async(userId) => {
-  return await GET(`/user/${userId}/books`);
+export const getMyBooks = async(userId, params) => {
+  return await GET(`/user/${userId}/books`, params);
 }
 
 export const addBook = async(book) => {
